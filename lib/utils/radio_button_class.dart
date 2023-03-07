@@ -1,0 +1,1 @@
+enum TypeOfWay { one,round }

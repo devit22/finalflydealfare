@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "836996424097",
+    "project_id": "ttlholidayinc",
+    "storage_bucket": "ttlholidayinc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836996424097:android:929f0e2c565b6c41cc2be0",
+        "android_client_info": {
+          "package_name": "com.ttlholidayInc.fly_deal_fare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836996424097-49epa1utfr0uh3vdgqjcp6rvckjv4qt8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ttlholidayInc.fly_deal_fare",
+            "certificate_hash": "a7a965f9e0f507c6fc7e029254378a4a3b0e7249"
+          }
+        },
+        {
+          "client_id": "836996424097-kkvr8rq61oo8co88pcte9ukhulkc1lv5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPDGp0nLl0GSSsx2S70tQtsoPmQXQZw3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836996424097-1ujqaslvoktememukbguuennqvrfi3ta.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "836996424097-6ja4ieg4l1phnp54nltb1fktqn1sr63k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ttlholidaysInc.flyDealFare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
