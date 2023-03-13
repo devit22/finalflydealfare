@@ -29,7 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.836996424097-f523ue1thsn7hooq37vo7msat19pscf0</string>
+				<string>com.googleusercontent.apps.836996424097-q2ieq8tpm7baai04o87bds4poh0ugdc9</string>
 			</array>
 		</dict>
 	</array>
@@ -38,16 +38,6 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<string>fbapi</string>
 	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSLocationAlwaysAndWhenInUsageDescription</key>
-	<string>App app want's to access your location to get address</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>App app want's to access your location to get address.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>App app want's to access your location to get address.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string> App want's to access your location to get address.</string>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -62,5 +52,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 </dict>
 </plist>

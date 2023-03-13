@@ -23,9 +23,6 @@ import 'package:fly_deal_fare/ui/travel_update_screen.dart';
 import 'package:fly_deal_fare/utils/diamensions.dart';
 import 'package:get/get.dart';
 
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   Data? loggedindata;
@@ -48,25 +45,10 @@ var bottompages = [];
   GlobalKey<CurvedNavigationBarState> _bottomNavigationKey = GlobalKey();
   String url = "https://v2.zopim.com/widget/livechat.html?api_calls=%5B%5D&hostname=flydealfare.com&key=3Em35GdwEBlCExa7X0KZN0silzvPrqZA&lang=en&";
 late FirebaseAuth auth;
-//String country = "";
 
-Future<Position> getuserCurrentLocation() async{
-
-  await Geolocator.requestPermission().then((value){
-    print("Permission Granted");
-  }).onError((error, stackTrace){
-    print("error => ${error.toString()}");
-  });
-
-  return await Geolocator.getCurrentPosition();
-}
   @override
   void initState() {
 
-
-  getuserCurrentLocation().then((value) {
-    print(" ${value.latitude} and ${value.longitude} ");
-  });
 
     auth = FirebaseAuth.instance;
 
@@ -108,7 +90,8 @@ Future<Position> getuserCurrentLocation() async{
               child: Image.asset(
                 "assets/images/mydrawyerlogo.png",
                 fit: BoxFit.contain,
-              )),
+              )
+          ),
           iconTheme: const IconThemeData(color: Colors.blue),
           actions: [
             GestureDetector(
@@ -255,11 +238,6 @@ Future<Position> getuserCurrentLocation() async{
 
                     Navigator.push(context, MaterialPageRoute(builder: (context) => LogInScreen()));
 
-
-//                   auth.signOut();
-// FacebookAuth.instance.logOut().then((value) => {
-//
-// });
 
                 },
               ),

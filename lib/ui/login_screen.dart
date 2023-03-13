@@ -1154,74 +1154,7 @@ class _LogInScreenState extends State<LogInScreen> {
     }
   }
 
-  //  facebookloginfunction() async{
-  //
-  // //   await FacebookAuth.i.logOut().then((value){
-  // // print("logout");
-  // //   });
-  //   try{
-  //
-  //     FacebookAuth.instance.logOut();
-  //     final result = await FacebookAuth.instance.login(permissions: ['email','public_profile']);
-  //
-  //
-  //    //final result = await FacebookAuth.i.login(,loginBehavior: LoginBehavior.)
-  //     if(result.status == LoginStatus.success){
-  //       final userData = await FacebookAuth.i.getUserData();
-  //       OAuthCredential credential = FacebookAuthProvider.credential(result.accessToken!.token);
-  //
-  //       // Sign the user in (or link) with the credential
-  //       var user =  await auth.signInWithCredential(credential);
-  //
-  //
-  //       //
-  //       // print(userData["email"]);
-  //       // print(userData["name"]);
-  //       // // UserApiService.getResgisterelinkList(
-  //       // //     userData['email'], "Not Available", userData['name'],
-  //       // //     "Not Available", "Facebook").then((value) {
-  //       // //   Navigator.of(context).push(
-  //       // //       MaterialPageRoute(builder: (context) => HomeScreen(loggedindata: loggedInUser,pageIndex: 0,iscomponentload: true,)));
-  //       // // });
-  //
-  //
-  //
-  //       if(user != null){
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //             const  SnackBar(content:   Text("Logged in with Facebook"))
-  //         );
-  //
-  //
-  //         UserApiService.getResgisterelinkList(user.user!.email!, "Not Available",user.user!.displayName! , "Not Available", "Facebook").then((value) {
-  //
-  //           if (value.data == "Registration Completed") {
-  //             FirebaseFirestore.instance.collection("users").doc(user.user!.uid).set({
-  //               "UserId": value.UserId
-  //             }).then((values) =>
-  //             {
-  //               fetchlogindata(value.UserId!),
-  //
-  //             });
-  //           } else if(value.data == "User Alredy Exist") {
-  //             String userid="";
-  //             FirebaseFirestore.instance.collection("users").doc(user.user!.uid).get().then((vardata)  {
-  //               userid  = vardata['UserId'];
-  //               fetchlogindata(userid);
-  //             });
-  //           }else{
-  //             ScaffoldMessenger.of(context).showSnackBar(
-  //                 const  SnackBar(content:   Text("Something went wrong"))
-  //             );
-  //           }
-  //         });
-  //
-  //       }
-  //     }
-  //   }catch(error){
-  //     print("error => ${error.toString()}");
-  //   }
-  //
-  // }
+
 
   void checkloggedIn()  async{
 
@@ -1239,39 +1172,7 @@ class _LogInScreenState extends State<LogInScreen> {
    }
   }
 
-  // void signinwithappple() async{
-  //   if(await TheAppleSignIn.isAvailable()){
-  //     print("This Device is not eligible for Apple Sign In");
-  //   }
-  //
-  //   final res = await TheAppleSignIn.performRequests([
-  //     AppleIdRequest(requestedScopes: [Scope.email,Scope.fullName])
-  //   ]);
-  //
-  //   switch(res.status){
-  //     case AuthorizationStatus.authorized:
-  //       try{
-  //         final AppleIdCredential appleIdCredential = res.credential!;
-  //         final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-  //         final credential = oAuthProvider.credential(
-  //             idToken: String.fromCharCodes(appleIdCredential.identityToken!),
-  //             accessToken: String.fromCharCodes(appleIdCredential.authorizationCode!)
-  //         );
-  //         await signinwithCredential(credential);
-  //       } on PlatformException catch(error){
-  //         print("error => ${error.message}");
-  //       } on FirebaseAuthException catch (error){
-  //         print(error.message);
-  //       }
-  //       break;
-  //     case AuthorizationStatus.error:
-  //       print("Apple Authorization failed");
-  //       break;
-  //     case AuthorizationStatus.cancelled:
-  //       print("User cancelled the login");
-  //       break;
-  //   }
-  // }
+
 
 
   signinwithCredential(OAuthCredential credential) {
