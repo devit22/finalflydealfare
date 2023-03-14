@@ -7,6 +7,8 @@ import 'package:fly_deal_fare/colors_class/colors_class.dart';
 import 'package:fly_deal_fare/utils/diamensions.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 class BlogDetailPage extends StatefulWidget {
   final String? blogUrl;
  const   BlogDetailPage({Key? key,this.blogUrl}) : super(key: key);
@@ -17,18 +19,101 @@ class BlogDetailPage extends StatefulWidget {
 
 class _BlogDetailPageState extends State<BlogDetailPage> {
 
-  late WebViewController _controller;
-  final Completer<WebViewController> _controllerCompleter =
-  Completer<WebViewController>();
+  late final WebViewController _controller;
 
-@override
+
+
+
+    @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    Future.delayed(Duration(seconds:3), (){
-      _controller.evaluateJavascript("document.getElementsByTagName('header')[0].style.display='none'");
+  Future.delayed(Duration(seconds:5), (){
+      _controller.runJavaScript("document.getElementsByTagName('header')[0].style.display='none'");
       // print("this is printing after 10 seconds");
     });
+    // #docregion platform_features
+    late final PlatformWebViewControllerCreationParams params;
+    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+      params = WebKitWebViewControllerCreationParams(
+        allowsInlineMediaPlayback: true,
+        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+      );
+    } else {
+      params = const PlatformWebViewControllerCreationParams();
+    }
+
+    final WebViewController controller =
+    WebViewController.fromPlatformCreationParams(params);
+    // #enddocregion platform_features
+
+    controller
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            debugPrint('WebView is loading (progress : $progress%)');
+          },
+          onPageFinished: (String url) {
+
+
+            //hide blog
+            //hide whatsup
+            _controller.runJavaScript("document.getElementsByClassName('q8c6tt-2 dJvETY')[0].style.visibility='collapse'");
+            //hide header
+            _controller.runJavaScript("document.getElementsByClassName('mob-header')[0].style.visibility='collapse'");
+            // _controller.evaluateJavascript("document.getElementsByClassName('widget widget_recent_entries opportunity')[0].style.display='none'");
+            //hide footer
+            // _controller.evaluateJavascript("(document).ready(function(){ setTimeout(function(){ var modal = document.getElementById('myModal');modal.style.display = 'none';},1000);});");
+
+            //hide footer
+            _controller.runJavaScript("document.getElementsByTagName('footer')[0].style.display='none'");
+
+
+
+            // Future.delayed(Duration(seconds: 3),(){
+            // _controller.runJavaScript("document.getElementsByClassName('meshim_widget_components_mobileChatButton_TappingScreen')[0].style.display='none'");
+            // });
+
+          },
+          onWebResourceError: (WebResourceError error) {
+            debugPrint('''
+Page resource error:
+  code: ${error.errorCode}
+  description: ${error.description}
+  errorType: ${error.errorType}
+  isForMainFrame: ${error.isForMainFrame}
+          ''');
+          },
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              debugPrint('blocking navigation to ${request.url}');
+              return NavigationDecision.prevent;
+            }
+            debugPrint('allowing navigation to ${request.url}');
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..addJavaScriptChannel(
+        'Toaster',
+        onMessageReceived: (JavaScriptMessage message) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message.message)),
+          );
+        },
+      )
+      ..loadRequest(Uri.parse(widget.blogUrl!));
+
+    // #docregion platform_features
+    if (controller.platform is AndroidWebViewController) {
+      AndroidWebViewController.enableDebugging(true);
+      (controller.platform as AndroidWebViewController)
+          .setMediaPlaybackRequiresUserGesture(false);
+    }
+    // #enddocregion platform_features
+
+    _controller = controller;
   }
   @override
   Widget build(BuildContext context) {
@@ -61,19 +146,8 @@ class _BlogDetailPageState extends State<BlogDetailPage> {
             )
           ]
       ),
-      body: WebView(
-          javascriptMode: JavascriptMode.unrestricted,
-          initialUrl: widget.blogUrl,
-          onWebViewCreated: (WebViewController webViewController) {
-            _controllerCompleter.future.then((value) => _controller = value);
-            _controllerCompleter.complete(webViewController);
-          },
-        onPageFinished: (value){
-
-            _controller.evaluateJavascript("document.getElementsByTagName('header')[0].style.display='none'");
-
-
-        },
+      body: WebViewWidget(
+controller: _controller,
 
           ),
 

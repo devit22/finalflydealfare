@@ -49,6 +49,7 @@ dependencies:
   cloud_firestore: ^4.4.3
   entry: ^0.0.8+1
   lottie: ^2.2.0
+  the_apple_sign_in: ^1.1.1
   flutter_phone_direct_caller: ^2.1.1
   firebase_app_check: ^0.1.1+12
 

@@ -21,8 +21,8 @@ class Deals extends StatefulWidget {
 class _DealsState extends State<Deals> {
 
   var selectDateText = "Depart Date";
-  var departairportCode = "JFK";
-  var destinationAirportCode = "DEL";
+  var departairportCode = "some";
+  var destinationAirportCode = "some";
   var departSuggestionValue = "Depart City";
   var destinationSuggestionValue = "Destination City";
   var fieldText = TextEditingController();
@@ -946,14 +946,14 @@ TypeOfWay _typeOfWay = TypeOfWay.one;
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(20)))),
                   onPressed: () {
-    // if(widget.isLoggedIn){
-    //
-    // }else{
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //       const  SnackBar(content:   Text("Please Sign In Your Self"))
-    //   );
-    //}
-                      showlist();
+    if(widget.isLoggedIn){
+      showlist();
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+          const  SnackBar(content:   Text("Please Sign In Your Self"))
+      );
+    }
+
 
 
                   },
@@ -1061,23 +1061,20 @@ TypeOfWay _typeOfWay = TypeOfWay.one;
       if(_typeOfWay.name == 'one'){
         var DateSelectText = selectDateText;
 
-        // UserApiService.submitsecretdata(widget.loggedindata!.id!, departSuggestionValue, destinationSuggestionValue, dropdownvalue, DateSelectText,"Searched One Way","$adultcount","$childcount","$infantcount", emailcontrollere.text, finalnumberText, namecontroller.text, _typeOfWay.name).then((value) {
-        //
-        //   print(value.data);
-        //    Navigator.push(context, MaterialPageRoute(builder: (builder) => SpecialDealSearch(isoneway: "one",fromDate: DateSelectText,depcode: departcode,descode: descode)));
-        // });
-        Navigator.push(context, MaterialPageRoute(builder: (builder) => SpecialDealSearch(isoneway: "one",fromDate: DateSelectText,depcode: departcode,descode: descode)));
+        UserApiService.submitsecretdata(widget.loggedindata!.id!, departSuggestionValue, destinationSuggestionValue, dropdownvalue, DateSelectText,"Searched One Way","$adultcount","$childcount","$infantcount", emailcontrollere.text, finalnumberText, namecontroller.text, _typeOfWay.name).then((value) {
+
+          print(value.data);
+           Navigator.push(context, MaterialPageRoute(builder: (builder) => SpecialDealSearch(isoneway: "one",fromDate: DateSelectText,depcode: departcode,descode: descode)));
+        });
+
       }else{
         var startDate = startDateText;
         var endDate = endDateText;
 
-        // UserApiService.submitsecretdata(widget.loggedindata!.id!, departSuggestionValue, destinationSuggestionValue, dropdownvalue, startDate,endDate,"$adultcount","$childcount","$infantcount", emailcontrollere.text, finalnumberText, namecontroller.text, _typeOfWay.name).then((value) {
-        //   print(value.data);
-        //   Navigator.push(context, MaterialPageRoute(builder: (builder) => SpecialDealSearch(isoneway: "round",depcode: departcode,descode: descode,fromDate: startDate,)));
-        // });
-        Navigator.push(context, MaterialPageRoute(builder: (builder) => SpecialDealSearch(isoneway: "round",depcode: departcode,descode: descode,fromDate: startDate,)));
-
-
+        UserApiService.submitsecretdata(widget.loggedindata!.id!, departSuggestionValue, destinationSuggestionValue, dropdownvalue, startDate,endDate,"$adultcount","$childcount","$infantcount", emailcontrollere.text, finalnumberText, namecontroller.text, _typeOfWay.name).then((value) {
+          print(value.data);
+          Navigator.push(context, MaterialPageRoute(builder: (builder) => SpecialDealSearch(isoneway: "round",depcode: departcode,descode: descode,fromDate: startDate,)));
+        });
       }
       setState(() {
         isDataSubmitted = false;

@@ -34,12 +34,12 @@ bool isdataloaded = true;
   @override
   void initState() {
 getCountry();
-  // UserApiService.getpricelist(widget.fromDate!,widget.isoneway!).then((value){
-  // pricelist = value;
-  //    setState(() {
-  //      isdataloaded=true;
-  //    });
-  // });
+  UserApiService.getpricelist(widget.fromDate!,widget.isoneway!).then((value){
+  pricelist = value;
+     setState(() {
+       isdataloaded=true;
+     });
+  });
     super.initState();
   }
 

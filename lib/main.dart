@@ -1,4 +1,6 @@
 
+
+
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,6 +12,7 @@ import 'package:fly_deal_fare/ui/notification_screen.dart';
 import 'package:fly_deal_fare/ui/root_home_screen.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'ui/open_pravicy_policy_url.dart';
 
 void main()  async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +61,7 @@ class MyApp extends StatelessWidget {
       color: Colors.blue,
       //home: HomeScreen(),
       home: EntryPackage(),
+    //home: OpenPravicyPolicyUrl(url: "https://flydealfare.com/privacy-policy/",title: "Privacy-Policy",),
     );
   }
 }

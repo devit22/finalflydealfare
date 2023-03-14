@@ -14,7 +14,7 @@ import 'package:fly_deal_fare/ui/register_screen.dart';
 import 'package:fly_deal_fare/ui/root_home_screen.dart';
 import 'package:fly_deal_fare/userapiservices/user_api_services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import '../utils/diamensions.dart';
 
 
@@ -49,7 +49,7 @@ class _LogInScreenState extends State<LogInScreen> {
   var smsmcod = "some";
   var verificationID = "some";
   Data? loggedInUser;
-  late FirebaseAuth auth;
+  late FirebaseAuth _auth;
   bool _isloggedIn = false;
   Map _userObj = {};
   String nameText="defaule";
@@ -59,7 +59,7 @@ class _LogInScreenState extends State<LogInScreen> {
   Map<String, dynamic>? _userData;
   //AccessToken? _accessToken;
   bool _checking = true;
-  var loggedin = true;
+  var loggedin = false;
 @override
   void dispose() {
     super.dispose();
@@ -73,9 +73,9 @@ class _LogInScreenState extends State<LogInScreen> {
   @override
   void initState() {
     _passwordVisible = false;
-    auth = FirebaseAuth.instance;
+    _auth = FirebaseAuth.instance;
     loggedInUser = new Data(id:"123",name:"Rahoul",email:"rahoul123@gmail.com",mobile: "7889105686",address: "zirakpur",username: "rahoul123@gmail.com",password: "sdfsd324234sdfs",pass_value: "abctest@123",dated: "2022-01-01",last_login: "2022-09-12",source: "Default");
-  checkloggedIn();
+  //checkloggedIn();
 
   }
 
@@ -303,28 +303,55 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                     child: Column(
                       children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: Diamensions.height10*5,
-                          margin:  EdgeInsets.only(
-                              left: Diamensions.width10*2, right: Diamensions.width10*2, top: Diamensions.height10*2, bottom: Diamensions.height5),
-                          child: OutlinedButton.icon(
-                              style: OutlinedButton.styleFrom(
-                                  side:  BorderSide(
-                                    width: Diamensions.width1*2,
-                                    color: ColorConstants.whitecolr,
-                                  ),
-                                  shape:  RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(Diamensions.width10*2)))),
-                              onPressed: () {
-                                googlesignin(context);
-                              },
-                              icon: SizedBox(
-                                  height: Diamensions.height10*3,
-                                  width: Diamensions.width10*3,
-                                  child: Image.asset('assets/images/google.png')),
-                              label: Text("Google")),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Container(
+                              width: Diamensions.width10*15,
+                              height: 50,
+                              margin:  EdgeInsets.only(top: Diamensions.width10),
+                              child: OutlinedButton.icon(
+                                  style: OutlinedButton.styleFrom(
+                                      side:  BorderSide(
+                                        width: Diamensions.width1*2,
+                                        color: ColorConstants.whitecolr,
+                                      ),
+                                      shape:  RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(Diamensions.width10*2)))),
+                                  onPressed: () {
+                                    googlesignin(context);
+                                  },
+                                  icon: SizedBox(
+                                      height: Diamensions.height10*3,
+                                      width: Diamensions.width10*3,
+                                      child: Image.asset('assets/images/google.png')),
+                                  label: Text("Google")),
+                            ),
+                            Container(
+                              width: Diamensions.width10*15,
+                              height: 50,
+                              margin:  EdgeInsets.only(top: Diamensions.width10),
+                              child: OutlinedButton.icon(
+                                  style: OutlinedButton.styleFrom(
+                                      side:  BorderSide(
+                                        width: Diamensions.width1*2,
+                                        color: ColorConstants.whitecolr,
+                                      ),
+                                      shape:  RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.all(Radius.circular(Diamensions.width10*2)))),
+                                  onPressed: () async {
+                                    await signinApple();
+                                  },
+                                  icon: SizedBox(
+                                      height: Diamensions.height10*3,
+                                      width: Diamensions.width10*3,
+                                      child: Image.asset('assets/images/apple.png')),
+                                  label: Text("Apple Id")),
+                            ),
+                          ],
                         ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -788,31 +815,9 @@ class _LogInScreenState extends State<LogInScreen> {
                           ),
                         ),
 
-                        //
 
-                        // (Platform.isIOS)? Container(
-                        //   width: MediaQuery.of(context).size.width,
-                        //   height: 50,
-                        //   margin: const EdgeInsets.only(
-                        //       left: 20, right: 20, top: 10, bottom: 5),
-                        //   child: OutlinedButton.icon(
-                        //       style: OutlinedButton.styleFrom(
-                        //           side: const BorderSide(
-                        //             width: 2,
-                        //             color: ColorConstants.whitecolr,
-                        //           ),
-                        //           shape: const RoundedRectangleBorder(
-                        //               borderRadius:
-                        //               BorderRadius.all(Radius.circular(20)))),
-                        //       onPressed: () {
-                        //         signinwithappple();
-                        //       },
-                        //       icon: SizedBox(
-                        //           height: 30,
-                        //           width: 30,
-                        //           child: Image.asset('assets/images/apple.png')),
-                        //       label: const Text("Sign with Apple")),
-                        // ):Container(),
+
+
 
 
                         Container(
@@ -928,9 +933,9 @@ class _LogInScreenState extends State<LogInScreen> {
       });
 
        finalnumber = "$countrycode$numberText";
-      auth = FirebaseAuth.instance;
+      _auth = FirebaseAuth.instance;
 
-      await auth.verifyPhoneNumber(
+      await _auth.verifyPhoneNumber(
         phoneNumber: finalnumber,
         timeout: const Duration(seconds: 120),
         codeAutoRetrievalTimeout: (String verificationId) {
@@ -960,7 +965,7 @@ class _LogInScreenState extends State<LogInScreen> {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationID, smsCode: code);
 
     // Sign the user in (or link) with the credential
-    var user =  await auth.signInWithCredential(credential);
+    var user =  await _auth.signInWithCredential(credential);
     if(user != null){
       ScaffoldMessenger.of(context).showSnackBar(
           const  SnackBar(content:   Text("Logged in with number"))
@@ -1138,7 +1143,7 @@ class _LogInScreenState extends State<LogInScreen> {
           const  SnackBar(content:   Text(" Please fill email"))
       );
     }else{
-      auth.sendPasswordResetEmail(email: emailtext).then((value) => {
+      _auth.sendPasswordResetEmail(email: emailtext).then((value) => {
       ScaffoldMessenger.of(context).showSnackBar(
       const  SnackBar(content:   Text("Please Check your email "))
       )
@@ -1158,9 +1163,9 @@ class _LogInScreenState extends State<LogInScreen> {
 
   void checkloggedIn()  async{
 
-   if(auth.currentUser != null){
+   if(_auth.currentUser != null){
      String userid="";
-     FirebaseFirestore.instance.collection("users").doc(auth.currentUser!.uid).get().then((vardata)  {
+     FirebaseFirestore.instance.collection("users").doc(_auth.currentUser!.uid).get().then((vardata)  {
        userid  = vardata['UserId'];
        fetchlogindata(userid);
      });
@@ -1177,7 +1182,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
   signinwithCredential(OAuthCredential credential) {
 
-    auth.signInWithCredential(credential).then((value) {
+    _auth.signInWithCredential(credential).then((value) {
 
       if(value != null){
         ScaffoldMessenger.of(context).showSnackBar(
@@ -1213,4 +1218,101 @@ class _LogInScreenState extends State<LogInScreen> {
       print("sing in with firebase");
     });
   }
+
+  signinApple() async{
+  if(!await TheAppleSignIn.isAvailable()){
+    ScaffoldMessenger.of(context).showSnackBar(
+        const  SnackBar(content:   Text("This Device is not eligible for Apple Sign In"))
+    );
+    return;
+  }
+
+  final res = await TheAppleSignIn.performRequests([
+    AppleIdRequest(requestedScopes: [Scope.email,Scope.fullName])
+  ]);
+
+  switch (res.status) {
+    case AuthorizationStatus.authorized:
+      try {
+        //Get Token
+        final AppleIdCredential appleIdCredential = res.credential!;
+        final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
+        final credential = oAuthProvider.credential(
+            idToken: String.fromCharCodes(appleIdCredential.identityToken!),
+            accessToken: String.fromCharCodes(appleIdCredential.authorizationCode!));
+
+        await signinwithcredentiall(credential);
+
+
+      } on PlatformException catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content:   Text(error.message!))
+        );
+
+      } on FirebaseAuthException catch (error) {
+
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content:   Text(error.message!))
+        );
+      }
+      break;
+    case AuthorizationStatus.error:
+
+     // _errorMessage.sink.add('Apple authorization failed');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content:   Text(AuthorizationStatus.error.toString()))
+      );
+      break;
+    case AuthorizationStatus.cancelled:
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content:   Text(AuthorizationStatus.error.toString()))
+      );
+      break;
+  }
+  }
+
+  Future<void> signinwithcredentiall(AuthCredential credential) async {
+
+   _auth.signInWithCredential(credential).then((value) {
+     if(value != null){
+       ScaffoldMessenger.of(context).showSnackBar(
+           const  SnackBar(content:   Text("Logged in with Apple"))
+       );
+
+
+       UserApiService.getResgisterelinkList(value.user!.email!, "Not Available", "Not Availble" , "Not Available", "Apple").then((restvalues) {
+
+         if (restvalues.data == "Registration Completed") {
+           FirebaseFirestore.instance.collection("users").doc(value.user!.uid).set({
+             "UserId": restvalues.UserId
+           }).then((values) =>
+           {
+             fetchlogindata(restvalues.UserId!),
+
+           });
+         } else if(restvalues.data == "User Alredy Exist") {
+           String userid="";
+           FirebaseFirestore.instance.collection("users").doc(value.user!.uid).get().then((vardata)  {
+             userid  = vardata['UserId'];
+             fetchlogindata(userid);
+           });
+         }else{
+           ScaffoldMessenger.of(context).showSnackBar(
+               const  SnackBar(content:   Text("Something went wrong"))
+           );
+         }
+       });
+
+     }
+     print("user id => ${value.user!.uid}");
+     print("sing in with firebase");
+  });
+
+
+
+  }
+
+//class end
 }
