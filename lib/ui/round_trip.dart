@@ -44,24 +44,27 @@ class _RoundTripState extends State<RoundTrip> {
     super.dispose();
     fieldText.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
           Container(
-            width: Diamensions.width310+Diamensions.width10*2,
-            height: Diamensions.height53,
-            padding: EdgeInsets.only(left: Diamensions.width10+Diamensions.width5,right: Diamensions.width10+Diamensions.width5),
-            margin:  EdgeInsets.only(left: Diamensions.width10, right: Diamensions.width10),
+            width: Diamensions.width310 + Diamensions.width10 * 2,
+            padding: EdgeInsets.only(
+                left: Diamensions.width10 + Diamensions.width5,
+                right: Diamensions.width10 + Diamensions.width5),
+            margin: EdgeInsets.only(
+                left: Diamensions.width10, right: Diamensions.width10),
             child: TypeAheadField<Output?>(
-              loadingBuilder: (context){
+              loadingBuilder: (context) {
                 return SizedBox(
-                  height: 50,
-                  child: Center(child: CircularProgressIndicator(
+                  height: Diamensions.width10 * 5,
+                  child: const Center(
+                      child: CircularProgressIndicator(
                     color: ColorConstants.backgroundColor,
-                  )
-                  ),
+                  )),
                 );
               },
               minCharsForSuggestions: 3,
@@ -98,18 +101,22 @@ class _RoundTripState extends State<RoundTrip> {
                 Color textcolor = (i % 2 == 0) ? Colors.white : Colors.blue;
 
                 return Container(
-                  height: Diamensions.width10*3,
+                  height: Diamensions.width10 * 3,
                   color: colors,
-                  padding:  EdgeInsets.only(
-                      left: Diamensions.width5, right: Diamensions.width5, top: Diamensions.height5/2, bottom: Diamensions.height5/2),
+                  padding: EdgeInsets.only(
+                      left: Diamensions.width5,
+                      right: Diamensions.width5,
+                      top: Diamensions.height5 / 2,
+                      bottom: Diamensions.height5 / 2),
                   child: Text(
                     "${user?.name} (${user?.code})",
-                    style: TextStyle(color: textcolor, fontSize: Diamensions.fontsize19),
+                    style: TextStyle(
+                        color: textcolor, fontSize: Diamensions.fontsize19),
                   ),
                 );
               },
               noItemsFoundBuilder: (context) => Container(
-                height: Diamensions.width10*8,
+                height: Diamensions.width10 * 8,
                 child: const Center(
                   child: Text(
                     'No user found',
@@ -125,34 +132,36 @@ class _RoundTripState extends State<RoundTrip> {
                   departAirportCodeValue = user.code!;
                 });
               },
-              errorBuilder:(context,object){
+              errorBuilder: (context, object) {
                 return SizedBox(
-                  height:Diamensions.height10*5,
+                  height: Diamensions.height10 * 5,
                   child: Center(
-                      child: Text(" ERROR! ",style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 25
-                      ),)),
+                      child: Text(
+                    " ERROR! ",
+                    style: TextStyle(color: Colors.red, fontSize: 25),
+                  )),
                 );
               },
             ),
           ),
           SizedBox(
-            height: Diamensions.height5,
+            height: Diamensions.height10,
           ),
           Container(
-            width: Diamensions.width310+Diamensions.width10*2,
-            height: Diamensions.height53,
-            padding: EdgeInsets.only(left: Diamensions.width10+Diamensions.width5,right: Diamensions.width10+Diamensions.width5),
-            margin:  EdgeInsets.only(left: Diamensions.width10, right: Diamensions.width10),
+            width: Diamensions.width310 + Diamensions.width10 * 2,
+            padding: EdgeInsets.only(
+                left: Diamensions.width10 + Diamensions.width5,
+                right: Diamensions.width10 + Diamensions.width5),
+            margin: EdgeInsets.only(
+                left: Diamensions.width10, right: Diamensions.width10),
             child: TypeAheadField<Output?>(
-              loadingBuilder: (context){
+              loadingBuilder: (context) {
                 return SizedBox(
-                  height: 50,
-                  child: Center(child: CircularProgressIndicator(
+                  height: Diamensions.width10 * 5,
+                  child: const Center(
+                      child: CircularProgressIndicator(
                     color: ColorConstants.backgroundColor,
-                  )
-                  ),
+                  )),
                 );
               },
               minCharsForSuggestions: 3,
@@ -189,18 +198,22 @@ class _RoundTripState extends State<RoundTrip> {
                 Color textcolor = (i % 2 == 0) ? Colors.white : Colors.blue;
 
                 return Container(
-                  height: Diamensions.width10*3,
+                  height: Diamensions.width10 * 3,
                   color: colors,
                   padding: EdgeInsets.only(
-                      left: Diamensions.width5, right: Diamensions.width5, top: Diamensions.height5/2, bottom: Diamensions.height5/2),
+                      left: Diamensions.width5,
+                      right: Diamensions.width5,
+                      top: Diamensions.height5 / 2,
+                      bottom: Diamensions.height5 / 2),
                   child: Text(
                     "${user?.name} (${user?.code})",
-                    style: TextStyle(color: textcolor, fontSize: Diamensions.fontsize19),
+                    style: TextStyle(
+                        color: textcolor, fontSize: Diamensions.fontsize19),
                   ),
                 );
               },
               noItemsFoundBuilder: (context) => Container(
-                height: Diamensions.width10*8,
+                height: Diamensions.width10 * 8,
                 child: const Center(
                   child: Text(
                     'No user found',
@@ -216,30 +229,38 @@ class _RoundTripState extends State<RoundTrip> {
                   destinationAirportCodeValue = user.code!;
                 });
               },
-              errorBuilder:(context,object){
+              errorBuilder: (context, object) {
                 return SizedBox(
-                  height:Diamensions.height10*5,
+                  height: Diamensions.height10 * 5,
                   child: Center(
-                      child: Text(" ERROR! ",style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 25
-                      ),)),
+                      child: Text(
+                    " ERROR! ",
+                    style: TextStyle(
+                        color: Colors.red, fontSize: Diamensions.fontsize2 * 2),
+                  )),
                 );
               },
             ),
           ),
+          SizedBox(
+            height: Diamensions.height10,
+          ),
           Container(
-            width: Diamensions.width310+Diamensions.width10*2,
+            width: Diamensions.width310 + Diamensions.width10 * 2,
             height: Diamensions.height53,
-            padding: EdgeInsets.only(left: Diamensions.width10+Diamensions.width5,right: Diamensions.width10+Diamensions.width5),
-            margin:  EdgeInsets.only(left: Diamensions.width10, right: Diamensions.width10),
+            padding: EdgeInsets.only(
+                left: Diamensions.width10 + Diamensions.width5,
+                right: Diamensions.width10 + Diamensions.width5),
+            margin: EdgeInsets.only(
+                left: Diamensions.width10, right: Diamensions.width10),
             child: Row(
               children: [
                 Container(
                     height: Diamensions.height58,
                     width: Diamensions.width145,
-                    margin:  EdgeInsets.only(
-                         right: Diamensions.width5, top: Diamensions.height5, bottom: Diamensions.height5),
+                    margin: EdgeInsets.only(
+                      right: Diamensions.width5,
+                    ),
                     child: OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
                           fixedSize: const Size(50, 40),
@@ -251,23 +272,25 @@ class _RoundTripState extends State<RoundTrip> {
                       onPressed: () async {
                         await showDateDialog(context);
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.calendar_month_outlined,
-                        size:  23,
+                        size: Diamensions.iconsize23,
                         color: ColorConstants.whitecolr,
                       ),
                       label: Text(
                         startDateText,
-                        style: const TextStyle(color: ColorConstants.whitecolr),
+                        style: TextStyle(
+                            fontSize: Diamensions.fontsize2 * 6,
+                            color: ColorConstants.whitecolr),
                       ),
                     )),
                 Flexible(
                   fit: FlexFit.tight,
                   child: Container(
                       height: Diamensions.height58,
-
-                      margin:  EdgeInsets.only(
-                          left: Diamensions.width10,  top: Diamensions.height5, bottom: Diamensions.height5),
+                      margin: EdgeInsets.only(
+                        left: Diamensions.width10,
+                      ),
                       child: OutlinedButton.icon(
                         style: OutlinedButton.styleFrom(
                             fixedSize: const Size(50, 40),
@@ -279,31 +302,37 @@ class _RoundTripState extends State<RoundTrip> {
                         onPressed: () async {
                           await showDateDialog(context);
                         },
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.calendar_month_outlined,
-                          size: 23,
+                          size: Diamensions.iconsize23,
                           color: ColorConstants.whitecolr,
                         ),
                         label: Text(
                           endDateText,
-                          style: const TextStyle(color: ColorConstants.whitecolr),
+                          style: TextStyle(
+                              fontSize: Diamensions.fontsize2 * 6,
+                              color: ColorConstants.whitecolr),
                         ),
                       )),
                 ),
               ],
             ),
           ),
+          SizedBox(
+            height: Diamensions.width10,
+          ),
           Container(
-            width: Diamensions.width310-Diamensions.width5*2,
-            height: Diamensions.height53-Diamensions.height5,
-            margin:  EdgeInsets.only(left: Diamensions.width10, right: Diamensions.width10),
+            width: Diamensions.width310 - Diamensions.width5 * 2,
+            padding: EdgeInsets.only(
+                top: Diamensions.width5,
+                bottom: Diamensions.width5,
+                right: Diamensions.width5),
+            margin: EdgeInsets.only(
+                left: Diamensions.width10, right: Diamensions.width10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5.0),
-                border: Border.all(width: 2,color: Colors.white)
-            ),
+                border: Border.all(width: 2, color: Colors.white)),
             child: DropdownButton(
-
-
               // Initial Value
               value: dropdownvalue,
               icon: const Icon(
@@ -311,22 +340,25 @@ class _RoundTripState extends State<RoundTrip> {
                 color: ColorConstants.whitecolr,
               ),
               isExpanded: true,
-              selectedItemBuilder: (BuildContext context) { //<-- SEE HERE
+              selectedItemBuilder: (BuildContext context) {
+                //<-- SEE HERE
                 return <String>[
                   'Economy',
                   'First',
                   'Business',
                   'Premium',
-                ]
-                    .map((String value) {
+                ].map((String value) {
                   return Center(
-                    child: Text(dropdownvalue,
-                      style:  TextStyle(color: Colors.white, fontSize: Diamensions.fontsize17),
+                    child: Text(
+                      dropdownvalue,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Diamensions.fontsize17),
                     ),
                   );
                 }).toList();
               },
-              underline: Container(height: 2,color: ColorConstants.backgroundColor,),
+              underline: Container(),
               alignment: Alignment.center,
               // Array list of items
               items: items.map((String items) {
@@ -335,8 +367,7 @@ class _RoundTripState extends State<RoundTrip> {
                   child: Text(
                     items,
                     style: const TextStyle(
-                        color: ColorConstants.iconColror,
-                        fontSize: 17),
+                        color: ColorConstants.iconColror, fontSize: 17),
                   ),
                 );
               }).toList(),
@@ -350,75 +381,85 @@ class _RoundTripState extends State<RoundTrip> {
             ),
           ),
           Container(
-            width: Diamensions.width310+Diamensions.width10*2,
-            padding: EdgeInsets.only(left: Diamensions.width10+Diamensions.width5,right: Diamensions.width10+Diamensions.width5),
-            margin:  EdgeInsets.only(left: Diamensions.width10, right: Diamensions.width10),
+            width: Diamensions.width310 + Diamensions.width10 * 2,
+            padding: EdgeInsets.only(
+                left: Diamensions.width10 + Diamensions.width5,
+                right: Diamensions.width10 + Diamensions.width5),
+            margin: EdgeInsets.only(
+                left: Diamensions.width10, right: Diamensions.width10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-
-                  margin: const EdgeInsets.only( top: 10, bottom: 5),
+                  margin: const EdgeInsets.only(top: 10, bottom: 5),
                   child: Stack(
                     children: [
-
                       Container(
-                        padding: EdgeInsets.only(top: Diamensions.height10,bottom: Diamensions.height5,),
-                        margin: EdgeInsets.only(top: Diamensions.height5),
-                        decoration:  BoxDecoration(
-                            border: Border.all(width: 1.3,color: Colors.white),
-                            borderRadius: BorderRadius.circular(6.0)
-
+                        padding: EdgeInsets.only(
+                          top: Diamensions.height10,
+                          bottom: Diamensions.height5,
                         ),
+                        margin: EdgeInsets.only(top: Diamensions.height5),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1.3, color: Colors.white),
+                            borderRadius: BorderRadius.circular(6.0)),
                         child: Row(
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
-                                  if(adultcount >1){
-                                    adultcount = adultcount-1;
+                                  if (adultcount > 1) {
+                                    adultcount = adultcount - 1;
                                   }
                                 });
                               },
                               child: Card(
                                 child: Container(
                                   color: Colors.white,
-                                  width: Diamensions.width5*4,
-                                  height: Diamensions.width5*4,
-                                  margin:  EdgeInsets.all(Diamensions.width1*2),
+                                  width: Diamensions.width5 * 4,
+                                  height: Diamensions.width5 * 4,
+                                  margin:
+                                      EdgeInsets.all(Diamensions.width1 * 2),
                                   child: Center(
-                                    child: Text("-",style: TextStyle(fontSize: Diamensions.fontsize17),),
+                                    child: Text(
+                                      "-",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize17),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                             Container(
-                                width: Diamensions.width10*3-5,
-                                height: Diamensions.height10*3-5,
+                                width: Diamensions.width10 * 3 - 5,
+                                height: Diamensions.height10 * 3 - 5,
                                 child: Center(
                                   child: Text(
                                     "$adultcount",
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                         color: ColorConstants.whitecolr,
                                         fontSize: Diamensions.fontsize17),
                                   ),
                                 )),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
-
-                                  adultcount = adultcount+1;
-
+                                  adultcount = adultcount + 1;
                                 });
                               },
                               child: Card(
                                 child: Container(
                                   color: Colors.white,
-                                  width: Diamensions.width5*4,
-                                  height: Diamensions.width5*4,
-                                  margin:  EdgeInsets.all(Diamensions.width1*2),
+                                  width: Diamensions.width5 * 4,
+                                  height: Diamensions.width5 * 4,
+                                  margin:
+                                      EdgeInsets.all(Diamensions.width1 * 2),
                                   child: Center(
-                                    child: Text("+",style: TextStyle(fontSize: Diamensions.fontsize17),),
+                                    child: Text(
+                                      "+",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize17),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -429,13 +470,14 @@ class _RoundTripState extends State<RoundTrip> {
                       Positioned(
                           child: Container(
                             color: ColorConstants.backgroundColor,
-                            child: Text("Adult",style: TextStyle(color: Colors.white),
+                            child: Text(
+                              "Adult",
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
-                          left: Diamensions.width10*3,
-                          bottom: Diamensions.height40-Diamensions.height1*2
-
-                      ),
+                          left: Diamensions.width10 * 3,
+                          bottom:
+                              Diamensions.height40 - Diamensions.height1 * 4),
                     ],
                   ),
                 ),
@@ -443,68 +485,75 @@ class _RoundTripState extends State<RoundTrip> {
                   width: Diamensions.height5,
                 ),
                 Container(
-
-                  margin: const EdgeInsets.only( top: 10, bottom: 5),
+                  margin: const EdgeInsets.only(top: 10, bottom: 5),
                   child: Stack(
                     children: [
-
                       Container(
-                        padding: EdgeInsets.only(top: Diamensions.height10,bottom: Diamensions.height5,),
-                        margin: EdgeInsets.only(top: Diamensions.height5),
-                        decoration:  BoxDecoration(
-                            border: Border.all(width: 1.3,color: Colors.white),
-                            borderRadius: BorderRadius.circular(6.0)
-
+                        padding: EdgeInsets.only(
+                          top: Diamensions.height10,
+                          bottom: Diamensions.height5,
                         ),
+                        margin: EdgeInsets.only(top: Diamensions.height5),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1.3, color: Colors.white),
+                            borderRadius: BorderRadius.circular(6.0)),
                         child: Row(
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
-                                  if(childcount >0){
-                                    childcount = childcount-1;
+                                  if (childcount > 0) {
+                                    childcount = childcount - 1;
                                   }
                                 });
                               },
                               child: Card(
                                 child: Container(
                                   color: Colors.white,
-                                  width: Diamensions.width5*4,
-                                  height: Diamensions.width5*4,
-                                  margin:  EdgeInsets.all(Diamensions.width1*2),
+                                  width: Diamensions.width5 * 4,
+                                  height: Diamensions.width5 * 4,
+                                  margin:
+                                      EdgeInsets.all(Diamensions.width1 * 2),
                                   child: Center(
-                                    child: Text("-",style: TextStyle(fontSize: Diamensions.fontsize17),),
+                                    child: Text(
+                                      "-",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize17),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                             Container(
-                                width: Diamensions.width10*3-5,
-                                height: Diamensions.height10*3-5,
+                                width: Diamensions.width10 * 3 - 5,
+                                height: Diamensions.height10 * 3 - 5,
                                 child: Center(
                                   child: Text(
                                     "$childcount",
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                         color: ColorConstants.whitecolr,
                                         fontSize: Diamensions.fontsize17),
                                   ),
                                 )),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
-
-                                  childcount = childcount+1;
-
+                                  childcount = childcount + 1;
                                 });
                               },
                               child: Card(
                                 child: Container(
                                   color: Colors.white,
-                                  width: Diamensions.width5*4,
-                                  height: Diamensions.width5*4,
-                                  margin:  EdgeInsets.all(Diamensions.width1*2),
+                                  width: Diamensions.width5 * 4,
+                                  height: Diamensions.width5 * 4,
+                                  margin:
+                                      EdgeInsets.all(Diamensions.width1 * 2),
                                   child: Center(
-                                    child: Text("+",style: TextStyle(fontSize: Diamensions.fontsize17),),
+                                    child: Text(
+                                      "+",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize17),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -515,12 +564,14 @@ class _RoundTripState extends State<RoundTrip> {
                       Positioned(
                           child: Container(
                             color: ColorConstants.backgroundColor,
-                            child: Text("Child",style: TextStyle(color: Colors.white),
+                            child: Text(
+                              "Child",
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
-                          left: Diamensions.width10*3,
-                          bottom: Diamensions.height40-Diamensions.height1*2
-                      ),
+                          left: Diamensions.width10 * 3,
+                          bottom:
+                              Diamensions.height40 - Diamensions.height1 * 4),
                     ],
                   ),
                 ),
@@ -528,68 +579,75 @@ class _RoundTripState extends State<RoundTrip> {
                   width: Diamensions.height5,
                 ),
                 Container(
-
-                  margin: const EdgeInsets.only( top: 10, bottom: 5),
+                  margin: const EdgeInsets.only(top: 10, bottom: 5),
                   child: Stack(
                     children: [
-
                       Container(
-                        padding: EdgeInsets.only(top: Diamensions.height10,bottom: Diamensions.height5,),
-                        margin: EdgeInsets.only(top: Diamensions.height5),
-                        decoration:  BoxDecoration(
-                            border: Border.all(width: 1.3,color: Colors.white),
-                            borderRadius: BorderRadius.circular(6.0)
-
+                        padding: EdgeInsets.only(
+                          top: Diamensions.height10,
+                          bottom: Diamensions.height5,
                         ),
+                        margin: EdgeInsets.only(top: Diamensions.height5),
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 1.3, color: Colors.white),
+                            borderRadius: BorderRadius.circular(6.0)),
                         child: Row(
                           children: [
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
-                                  if(infantcount >1){
-                                    infantcount = infantcount-1;
+                                  if (infantcount > 1) {
+                                    infantcount = infantcount - 1;
                                   }
                                 });
                               },
                               child: Card(
                                 child: Container(
                                   color: Colors.white,
-                                  width: Diamensions.width5*4,
-                                  height: Diamensions.width5*4,
-                                  margin:  EdgeInsets.all(Diamensions.width1*2),
+                                  width: Diamensions.width5 * 4,
+                                  height: Diamensions.width5 * 4,
+                                  margin:
+                                      EdgeInsets.all(Diamensions.width1 * 2),
                                   child: Center(
-                                    child: Text("-",style: TextStyle(fontSize: Diamensions.fontsize17),),
+                                    child: Text(
+                                      "-",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize17),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                             Container(
-                                width: Diamensions.width10*3-5,
-                                height: Diamensions.height10*3-5,
+                                width: Diamensions.width10 * 3 - 5,
+                                height: Diamensions.height10 * 3 - 5,
                                 child: Center(
                                   child: Text(
                                     "$infantcount",
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                         color: ColorConstants.whitecolr,
                                         fontSize: Diamensions.fontsize17),
                                   ),
                                 )),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
-
-                                  infantcount = infantcount+1;
-
+                                  infantcount = infantcount + 1;
                                 });
                               },
                               child: Card(
                                 child: Container(
                                   color: Colors.white,
-                                  width: Diamensions.width5*4,
-                                  height: Diamensions.width5*4,
-                                  margin:  EdgeInsets.all(Diamensions.width1*2),
+                                  width: Diamensions.width5 * 4,
+                                  height: Diamensions.width5 * 4,
+                                  margin:
+                                      EdgeInsets.all(Diamensions.width1 * 2),
                                   child: Center(
-                                    child: Text("+",style: TextStyle(fontSize: Diamensions.fontsize17),),
+                                    child: Text(
+                                      "+",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize17),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -600,12 +658,14 @@ class _RoundTripState extends State<RoundTrip> {
                       Positioned(
                           child: Container(
                             color: ColorConstants.backgroundColor,
-                            child: Text("Infant",style: TextStyle(color: Colors.white),
+                            child: Text(
+                              "Infant",
+                              style: TextStyle(color: Colors.white),
                             ),
                           ),
-                          left: Diamensions.width10*3,
-                          bottom: Diamensions.height40-Diamensions.height1*2
-                      ),
+                          left: Diamensions.width10 * 3,
+                          bottom:
+                              Diamensions.height40 - Diamensions.height1 * 4),
                     ],
                   ),
                 ),
@@ -640,15 +700,19 @@ class _RoundTripState extends State<RoundTrip> {
           //     )),
           Container(
             width: Diamensions.width310,
-            margin:
-                 EdgeInsets.only(left: Diamensions.width10*2, right: Diamensions.width10*2, top: Diamensions.height10, bottom: Diamensions.height5),
+            margin: EdgeInsets.only(
+                left: Diamensions.width10 * 2,
+                right: Diamensions.width10 * 2,
+                top: Diamensions.height10,
+                bottom: Diamensions.height5),
             child: FloatingActionButton.extended(
               backgroundColor: ColorConstants.greencolor,
               onPressed: () {
                 var myurl3 =
                     "https://flights.flightinfo.live/web/air/default.aspx?siid=949880&AirSegCount=2&aCount=$adultcount&sCount=0&cCount=$childcount&yCount=$infantcount&iSCount=0&iLCount=0&Class=$dropdownvalue&DirectFlight=&Refundable=&AirSeg_1=$departAirportCodeValue|$destinationAirportCodeValue|$startDateText||-1|3|&AirSeg_2=$destinationAirportCodeValue|$departAirportCodeValue|$endDateText||-1|3|";
                 //var myurl2 = "https://flights.flightinfo.live/web/air/default.aspx?siid=131174&AirSegCount=2&aCount=$adultcountg&sCount=0&cCount=$childcountg&yCount=$infantcountg&iSCount=0&iLCount=0&Class=$dropdownvalueg&DirectFlight=&Refundable=&AirSeg_1=$departAirportCodeValue|$destinationAirportCodeValue|$startDateText||-1|3|&AirSeg_2=$destinationAirportCodeValue|$departAirportCodeValue|$endDateText||-1|3|";
-var myurl4 = "https://flights.flydealfare.com/web/air/default.aspx?siid=999886&AirSegCount=2&aCount=$adultcount&sCount=0&cCount=$childcount&yCount=$infantcount&iSCount=0&iLCount=0&Class=$dropdownvalue&DirectFlight=&Refundable=&AirSeg_1=$departAirportCodeValue|$destinationAirportCodeValue|$startDateText||-1|3|&AirSeg_2=$destinationAirportCodeValue|$departAirportCodeValue|$endDateText||-1|3|";
+                var myurl4 =
+                    "https://flights.flydealfare.com/web/air/default.aspx?siid=999886&AirSegCount=2&aCount=$adultcount&sCount=0&cCount=$childcount&yCount=$infantcount&iSCount=0&iLCount=0&Class=$dropdownvalue&DirectFlight=&Refundable=&AirSeg_1=$departAirportCodeValue|$destinationAirportCodeValue|$startDateText||-1|3|&AirSeg_2=$destinationAirportCodeValue|$departAirportCodeValue|$endDateText||-1|3|";
                 //var  url = "https://flights.flydealfare.com/web/air/default.aspx?siid=105302&AirSegCount=2&aCount=$adultcountg&sCount=0&cCount=$childcountg&yCount=$infantcountg&iSCount=0&iLCount=0&Class=$dropdownvalueg&DirectFlight=&Refundable=&AirSeg_1=$departAirportCodeValue|$destinationAirportCodeValue|$startDateText||-1|3|&AirSeg_2=$destinationAirportCodeValue|$departAirportCodeValue|$endDateText||-1|3|";
                 Navigator.push(
                     context,
@@ -664,13 +728,16 @@ var myurl4 = "https://flights.flydealfare.com/web/air/default.aspx?siid=999886&A
             ),
           ),
           Container(
-            margin:
-            EdgeInsets.only(left: Diamensions.width10*2, right: Diamensions.width10*2, top: Diamensions.height10, bottom: Diamensions.height5),
+            margin: EdgeInsets.only(
+                left: Diamensions.width10 * 2,
+                right: Diamensions.width10 * 2,
+                top: Diamensions.height10,
+                bottom: Diamensions.height5),
             child: TextButton.icon(
               onPressed: () {},
               icon: SizedBox(
-                  height: Diamensions.height10*2,
-                  width: Diamensions.width10*2,
+                  height: Diamensions.height10 * 2,
+                  width: Diamensions.width10 * 2,
                   child: Image.asset('assets/images/reward_large.png')),
               label: const Text('Price Match Promise'),
             ),
@@ -712,6 +779,4 @@ var myurl4 = "https://flights.flydealfare.com/web/air/default.aspx?siid=999886&A
       });
     }
   }
-
-
 }

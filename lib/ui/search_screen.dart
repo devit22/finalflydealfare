@@ -9,7 +9,7 @@ import 'deals_screen.dart';
 
 class Search extends StatefulWidget {
   Data? loggedindata;
-   Search({Key? key,required this.loggedindata}) : super(key: key);
+  Search({Key? key, required this.loggedindata}) : super(key: key);
 
   @override
   State<Search> createState() => _SearchState();
@@ -47,8 +47,11 @@ class _SearchState extends State<Search> {
                   child: _tabBar,
                 ),
               )),
-          body:  TabBarView(
-            children: [Flights(),Deals(loggedindata: widget.loggedindata),],
+          body: TabBarView(
+            children: [
+              Flights(),
+              Deals(loggedindata: widget.loggedindata),
+            ],
           ),
         ));
   }

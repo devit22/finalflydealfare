@@ -38,13 +38,13 @@ class _FlightsState extends State<Flights> with TickerProviderStateMixin {
       ),
       body: Container(
         color: ColorConstants.backgroundColor,
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(Diamensions.width1 * 8),
         child: Column(
           children: [
             // give the tab bar a height [can change hheight to preferred height]
             Container(
-              height: 35,
-              width: 320,
+              height: Diamensions.height10 * 3,
+              width: Diamensions.width310,
               decoration: BoxDecoration(
                 color: ColorConstants.whitecolr,
                 borderRadius: BorderRadius.circular(
@@ -80,7 +80,9 @@ class _FlightsState extends State<Flights> with TickerProviderStateMixin {
               ),
             ),
             // tab bar view here
-            SizedBox(height: Diamensions.height10,),
+            SizedBox(
+              height: Diamensions.height10,
+            ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,

@@ -1,6 +1,4 @@
-
 import 'dart:convert';
-
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_picker/country_picker.dart';
@@ -17,11 +15,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 import '../utils/diamensions.dart';
 
-
-
-
-
-
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
 
@@ -30,7 +23,6 @@ class LogInScreen extends StatefulWidget {
 }
 
 class _LogInScreenState extends State<LogInScreen> {
-
   late bool _passwordVisible;
   late bool _gmaillayoutVisible = true;
   late bool _numberlayoutVisible = false;
@@ -52,31 +44,42 @@ class _LogInScreenState extends State<LogInScreen> {
   late FirebaseAuth _auth;
   bool _isloggedIn = false;
   Map _userObj = {};
-  String nameText="defaule";
-  String finalnumber="default";
+  String nameText = "defaule";
+  String finalnumber = "default";
 
   //for facebok
   Map<String, dynamic>? _userData;
   //AccessToken? _accessToken;
   bool _checking = true;
   var loggedin = false;
-@override
+  @override
   void dispose() {
     super.dispose();
-     emailControler.dispose();
-     passwordControler.dispose();
-     numberControler.dispose();
-     otpControler.dispose();
-     nameControler.dispose();
-     forgotemailController.dispose();
+    emailControler.dispose();
+    passwordControler.dispose();
+    numberControler.dispose();
+    otpControler.dispose();
+    nameControler.dispose();
+    forgotemailController.dispose();
   }
+
   @override
   void initState() {
     _passwordVisible = false;
     _auth = FirebaseAuth.instance;
-    loggedInUser = new Data(id:"123",name:"Rahoul",email:"rahoul123@gmail.com",mobile: "7889105686",address: "zirakpur",username: "rahoul123@gmail.com",password: "sdfsd324234sdfs",pass_value: "abctest@123",dated: "2022-01-01",last_login: "2022-09-12",source: "Default");
-  //checkloggedIn();
-
+    loggedInUser = new Data(
+        id: "123",
+        name: "Rahoul",
+        email: "rahoul123@gmail.com",
+        mobile: "7889105686",
+        address: "zirakpur",
+        username: "rahoul123@gmail.com",
+        password: "sdfsd324234sdfs",
+        pass_value: "abctest@123",
+        dated: "2022-01-01",
+        last_login: "2022-09-12",
+        source: "Default");
+    //checkloggedIn();
   }
 
   void emailandpasswordsigning() async {
@@ -85,14 +88,14 @@ class _LogInScreenState extends State<LogInScreen> {
 
     if (emailText == "" || passwordText == "") {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Please fill all Fields"))
-      );
+          const SnackBar(content: Text("Please fill all Fields")));
     } else {
       setState(() {
         circularvisibility = true;
       });
 
-      UserApiService.getLoggedInList(emailText, passwordText,context).then((value) {
+      UserApiService.getLoggedInList(emailText, passwordText, context)
+          .then((value) {
         setState(() {
           circularvisibility = false;
         });
@@ -100,32 +103,33 @@ class _LogInScreenState extends State<LogInScreen> {
         final map = json.decode(value.body.toString()) as Map<String, dynamic>;
 
         if (map['data'].runtimeType == String) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(" ${map['data']}"))
-          );
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(" ${map['data']}")));
         } else {
-          var obj = Data(id: map['data']['id'],
-              name: map['data']['name'],
-              email: map['data']['email'],
-              mobile: map['data']['mobile'],
-              address: map['data']['address'],
-              username: map['data']['username'],
-              password: map['data']['password'],
-              pass_value: map['data']['pass_value'],
-              dated: map['data']['dated'],
-              last_login: map['data']['last_login'],
-              source: map['data']['source'],
+          var obj = Data(
+            id: map['data']['id'],
+            name: map['data']['name'],
+            email: map['data']['email'],
+            mobile: map['data']['mobile'],
+            address: map['data']['address'],
+            username: map['data']['username'],
+            password: map['data']['password'],
+            pass_value: map['data']['pass_value'],
+            dated: map['data']['dated'],
+            last_login: map['data']['last_login'],
+            source: map['data']['source'],
           );
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => HomeScreen(loggedindata: obj,iscomponentload: true,isLoggedIn: true))
-
-          );
-       }
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                      loggedindata: obj,
+                      iscomponentload: true,
+                      isLoggedIn: true)));
+        }
       });
-
     }
   }
-
 
   void guestuser() async {
     setState(() {
@@ -141,8 +145,7 @@ class _LogInScreenState extends State<LogInScreen> {
           circularvisibility = false;
         });
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomeScreen())
-        );
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -167,10 +170,9 @@ class _LogInScreenState extends State<LogInScreen> {
       hostedDomain: '',
     ).signIn();
 
-
     if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount
-          .authentication;
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
 
       final AuthCredential authCredential = GoogleAuthProvider.credential(
           idToken: googleSignInAuthentication.idToken,
@@ -182,28 +184,33 @@ class _LogInScreenState extends State<LogInScreen> {
 
       if (user != null) {
         UserApiService.getResgisterelinkList(
-            user.email.toString(), "Not Available", user.displayName.toString(),
-            "Not Available", "Gmail").then((value) {
+                user.email.toString(),
+                "Not Available",
+                user.displayName.toString(),
+                "Not Available",
+                "Gmail")
+            .then((value) {
           //
           if (value.data == "Registration Completed") {
-            FirebaseFirestore.instance.collection("users").doc(
-                auth.currentUser!.uid).set({
-              "UserId": value.UserId
-            }).then((values) =>
-            {
-              fetchlogindata(value.UserId!),
-
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(auth.currentUser!.uid)
+                .set({"UserId": value.UserId}).then((values) => {
+                      fetchlogindata(value.UserId!),
+                    });
+          } else if (value.data == "User Alredy Exist") {
+            String userid = "";
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(user.uid)
+                .get()
+                .then((vardata) {
+              userid = vardata['UserId'];
+              fetchlogindata(userid);
             });
-          } else if(value.data == "User Alredy Exist") {
-            String userid="";
-            FirebaseFirestore.instance.collection("users").doc(user.uid).get().then((vardata)  {
-               userid  = vardata['UserId'];
-               fetchlogindata(userid);
-            });
-          }else{
+          } else {
             ScaffoldMessenger.of(context).showSnackBar(
-                const  SnackBar(content:   Text("Something went wrong"))
-            );
+                const SnackBar(content: Text("Something went wrong")));
           }
         });
       } // if result not null we simply call the MaterialpageRoute,
@@ -211,29 +218,28 @@ class _LogInScreenState extends State<LogInScreen> {
     }
   }
 
-    fetchlogindata(String userid)  async{
-    UserApiService.getuserlistwithuserid(userid).then((value) =>
-    {
-      loggedInUser = Data(
-          id: value[0].id,
-          name: value[0].name,
-          email: value[0].email,
-          mobile: value[0].mobile,
-          address: value[0].address,
-          username: value[0].username,
-          password: value[0].password,
-          pass_value: value[0].passValue,
-          dated: value[0].dated,
-          last_login: value[0].lastLogin,
-          source: value[0].source
-      )
-    });
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) =>
-            HomeScreen(loggedindata: loggedInUser,
+  fetchlogindata(String userid) async {
+    UserApiService.getuserlistwithuserid(userid).then((value) => {
+          loggedInUser = Data(
+              id: value[0].id,
+              name: value[0].name,
+              email: value[0].email,
+              mobile: value[0].mobile,
+              address: value[0].address,
+              username: value[0].username,
+              password: value[0].password,
+              pass_value: value[0].passValue,
+              dated: value[0].dated,
+              last_login: value[0].lastLogin,
+              source: value[0].source)
+        });
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => HomeScreen(
+              loggedindata: loggedInUser,
               pageIndex: 0,
-              iscomponentload: true,isLoggedIn: true,)));
-
+              iscomponentload: true,
+              isLoggedIn: true,
+            )));
   }
 
   // void facebooksignin(BuildContext context) async {
@@ -279,660 +285,866 @@ class _LogInScreenState extends State<LogInScreen> {
           style: TextStyle(color: ColorConstants.iconColror),
         ),
       ),
-      body: (loggedin )? Center(
-        child: const CircularProgressIndicator(color: ColorConstants.greencolor,),
-      ) :Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
+      body: (loggedin)
+          ? const Center(
+              child: const CircularProgressIndicator(
+                color: ColorConstants.greencolor,
+              ),
+            )
+          : Stack(
               children: [
-                SizedBox(
-                  height: Diamensions.height5,
-                ),
-                Divider(thickness: 1.2,color: ColorConstants.greencolor,),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: Diamensions.height5,
+                      ),
+                      const Divider(
+                        thickness: 1.2,
+                        color: ColorConstants.greencolor,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: Diamensions.width10,
+                          right: Diamensions.width10,
+                          top: Diamensions.width10,
+                        ),
+                        width: MediaQuery.of(context).size.width,
+                        // height: MediaQuery.of(context).size.height,
 
-                Container(
-                  margin:   EdgeInsets.only(left: Diamensions.width10,right: Diamensions.width10,top: Diamensions.width10),
-                  width: MediaQuery.of(context).size.width,
-                  // height: MediaQuery.of(context).size.height,
-
-                  child: Material(
-                    color: ColorConstants.backgroundColor,
-                    elevation: Diamensions.width10,
-                    borderRadius: BorderRadius.all(Radius.circular(Diamensions.width10*2),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                              width: Diamensions.width10*15,
-                              height: 50,
-                              margin:  EdgeInsets.only(top: Diamensions.width10),
-                              child: OutlinedButton.icon(
-                                  style: OutlinedButton.styleFrom(
-                                      side:  BorderSide(
-                                        width: Diamensions.width1*2,
-                                        color: ColorConstants.whitecolr,
-                                      ),
-                                      shape:  RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(Diamensions.width10*2)))),
-                                  onPressed: () {
-                                    googlesignin(context);
-                                  },
-                                  icon: SizedBox(
-                                      height: Diamensions.height10*3,
-                                      width: Diamensions.width10*3,
-                                      child: Image.asset('assets/images/google.png')),
-                                  label: Text("Google")),
-                            ),
-                            Container(
-                              width: Diamensions.width10*15,
-                              height: 50,
-                              margin:  EdgeInsets.only(top: Diamensions.width10),
-                              child: OutlinedButton.icon(
-                                  style: OutlinedButton.styleFrom(
-                                      side:  BorderSide(
-                                        width: Diamensions.width1*2,
-                                        color: ColorConstants.whitecolr,
-                                      ),
-                                      shape:  RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(Diamensions.width10*2)))),
-                                  onPressed: () async {
-                                    await signinApple();
-                                  },
-                                  icon: SizedBox(
-                                      height: Diamensions.height10*3,
-                                      width: Diamensions.width10*3,
-                                      child: Image.asset('assets/images/apple.png')),
-                                  label: Text("Apple Id")),
-                            ),
-                          ],
-                        ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        //   mainAxisSize: MainAxisSize.max,
-                        //   children: [
-                        //     // Container(
-                        //     //   width: 150,
-                        //     //   height: 50,
-                        //     //   margin: EdgeInsets.only(top: 10),
-                        //     //   child: OutlinedButton.icon(
-                        //     //       style: OutlinedButton.styleFrom(
-                        //     //           side: const BorderSide(
-                        //     //             width: 2,
-                        //     //             color: ColorConstants.whitecolr,
-                        //     //           ),
-                        //     //           shape: const RoundedRectangleBorder(
-                        //     //               borderRadius:
-                        //     //               BorderRadius.all(Radius.circular(20)))),
-                        //     //       onPressed: () {
-                        //     //
-                        //     //        // facebookloginfunction();
-                        //     //       },
-                        //     //       icon: SizedBox(
-                        //     //           height: 30,
-                        //     //           width: 30,
-                        //     //           child: Image.asset('assets/images/facebook.png')),
-                        //     //       label: Text("Facebook")),
-                        //     // ),
-                        //
-                        //   ],
-                        // ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              height: 2,
-                              width: 150,
-                              color: ColorConstants.whitecolr,
-                            ),
-                            const Text(
-                              "Or",
-                              style: TextStyle(
-                                  color: ColorConstants.whitecolr, fontSize: 18),
-                            ),
-                            Container(
-                              height: 2,
-                              width: 150,
-                              color: ColorConstants.whitecolr,
-                            )
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Container(
-                              width: Diamensions.width10*15,
-                              height: 50,
-                              margin:  EdgeInsets.only(top: Diamensions.width10),
-                              child: OutlinedButton.icon(
-                                  style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(
-                                        width: 2,
-                                        color: ColorConstants.whitecolr,
-                                      ),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(20)))),
-                                  onPressed: () {
-                                    setState(() {
-                                      _gmaillayoutVisible = true;
-                                      _numberlayoutVisible = false;
-                                      _otpverifylayoutVisible = false;
-                                    });
-                                  },
-                                  icon: SizedBox(
-                                      height: 30,
-                                      width: 30,
-                                      child: Image.asset('assets/images/gmail.png')),
-                                  label: const Text("Gmail")),
-                            ),
-                            Container(
-                              width: Diamensions.width10*15,
-                              height: 50,
-                              margin: EdgeInsets.only(top: 10),
-                              child: OutlinedButton.icon(
-                                  style: OutlinedButton.styleFrom(
-                                      side: const BorderSide(
-                                        width: 2,
-                                        color: ColorConstants.whitecolr,
-                                      ),
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.all(Radius.circular(20)))),
-                                  onPressed: () {
-                                    setState(() {
-                                      _numberlayoutVisible = true;
-                                      _gmaillayoutVisible = false;
-                                      _otpverifylayoutVisible = false;
-                                    });
-                                  },
-                                  icon: SizedBox(
-                                      height: 30,
-                                      width: 30,
-                                      child: Image.asset('assets/images/telephone.png')),
-                                  label: const Text("Number")),
-                            ),
-                          ],
-                        ),
-                        // gmail sign in layout
-                        Visibility(
-                            visible: _gmaillayoutVisible,
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    top: 15,
-                                  ),
-                                  child: TextFormField(
-                                      keyboardType: TextInputType.emailAddress,
-                                      controller: emailControler,
-                                      style: const TextStyle(color: ColorConstants.whitecolr),
-                                      decoration: const InputDecoration(
-                                          labelText: "Enter Email",
-                                          labelStyle:
-                                          TextStyle(color: ColorConstants.whitecolr),
-                                          hintStyle:
-                                          TextStyle(color: ColorConstants.whitecolr),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
+                        child: Material(
+                          color: ColorConstants.backgroundColor,
+                          elevation: Diamensions.width10,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(Diamensions.width10 * 2),
+                          ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: Diamensions.width10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Container(
+                                      width: Diamensions.width10 * 15,
+                                      height: Diamensions.width10 * 4,
+                                      margin: EdgeInsets.only(
+                                          top: Diamensions.width10),
+                                      child: OutlinedButton.icon(
+                                          style: OutlinedButton.styleFrom(
+                                              side: const BorderSide(
+                                                width: 2,
                                                 color: ColorConstants.whitecolr,
-                                                width: 2.0),
-                                          ),
-                                          disabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: ColorConstants.whitecolr,
-                                                width: 2.0),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: ColorConstants.whitecolr,
-                                                  width: 2.0)),
-                                          prefixIcon: Icon(
-                                            Icons.email_outlined,
-                                            color: ColorConstants.whitecolr,
-                                          ))),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(
-                                    left: 20,
-                                    right: 20,
-                                    top: 10,
-                                  ),
-                                  child: TextFormField(
-                                      obscureText: !_passwordVisible,
-                                      keyboardType: TextInputType.text,
-                                      controller: passwordControler,
-                                      style: const TextStyle(
-                                          color: ColorConstants.whitecolr),
-                                      decoration: InputDecoration(
-                                          labelText: "Enter Password",
-                                          labelStyle: const TextStyle(
-                                              color: ColorConstants.whitecolr),
-                                          hintStyle: const TextStyle(
-                                              color: ColorConstants.whitecolr),
-                                          border: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: ColorConstants.whitecolr,
-                                                width: 2.0),
-                                          ),
-                                          disabledBorder: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: ColorConstants.whitecolr,
-                                                width: 2.0),
-                                          ),
-                                          enabledBorder: const OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: ColorConstants.whitecolr,
-                                                  width: 2.0)),
-                                          prefixIcon: const Icon(
-                                            Icons.phonelink_lock,
-                                            color: ColorConstants.whitecolr,
-                                          ),
-                                          suffixIcon: IconButton(
-                                              onPressed: () {
-                                                setState(() {
-                                                  _passwordVisible = !_passwordVisible;
-                                                });
-                                              },
-                                              icon: Icon(
-                                                _passwordVisible
-                                                    ? Icons.visibility
-                                                    : Icons.visibility_off,
-                                                color: ColorConstants.whitecolr,
-                                              )))),
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: 50,
-                                  margin: const EdgeInsets.only(
-                                      left: 20, right: 20, top: 10, bottom: 5),
-                                  child: FloatingActionButton.extended(
-                                    backgroundColor: ColorConstants.greencolor,
-                                    onPressed: () {
-                                      emailandpasswordsigning();
-                                    },
-                                    label: const Text(
-                                      'Sign In',
-                                      style: TextStyle(color: Colors.white, fontSize: 19),
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              Diamensions
+                                                                      .width10 *
+                                                                  2)))),
+                                          onPressed: () {
+                                            googlesignin(context);
+                                          },
+                                          icon: SizedBox(
+                                              height: Diamensions.height10 * 3,
+                                              width: Diamensions.width10 * 3,
+                                              child: Image.asset(
+                                                  'assets/images/google.png')),
+                                          label: Text(
+                                            "Google",
+                                            style: TextStyle(
+                                              fontSize:
+                                                  Diamensions.fontsize2 * 6,
+                                            ),
+                                          )),
                                     ),
-                                  ),
+                                    Container(
+                                      width: Diamensions.width10 * 15,
+                                      height: Diamensions.width10 * 4,
+                                      margin: EdgeInsets.only(
+                                          top: Diamensions.width10),
+                                      child: OutlinedButton.icon(
+                                          style: OutlinedButton.styleFrom(
+                                              side: const BorderSide(
+                                                width: 2,
+                                                color: ColorConstants.whitecolr,
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              Diamensions
+                                                                      .width10 *
+                                                                  2)))),
+                                          onPressed: () async {
+                                            await signinApple();
+                                          },
+                                          icon: SizedBox(
+                                              height: Diamensions.height10 * 3,
+                                              width: Diamensions.width10 * 3,
+                                              child: Image.asset(
+                                                  'assets/images/apple.png')),
+                                          label: Text(
+                                            "Apple Id",
+                                            style: TextStyle(
+                                              fontSize:
+                                                  Diamensions.fontsize2 * 6,
+                                            ),
+                                          )),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            )),
+                              ),
 
-                        //number and otp layout
-
-                        Visibility(
-                            visible: _numberlayoutVisible,
-                            child: Column(
-                              children: [
-                                //number picker layout
-                                Container(
-                                  height: Diamensions.height10*5,
-
-                                  margin:  EdgeInsets.only(left: Diamensions.width10+Diamensions.width5, right:Diamensions.width10+Diamensions.width5, top: Diamensions.height10),
-                                  width: Diamensions.width310,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white, width: Diamensions.width1*2),
-                                    borderRadius: BorderRadius.circular(Diamensions.width5),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              //   mainAxisSize: MainAxisSize.max,
+                              //   children: [
+                              //     // Container(
+                              //     //   width: 150,
+                              //     //   height: 50,
+                              //     //   margin: EdgeInsets.only(top: 10),
+                              //     //   child: OutlinedButton.icon(
+                              //     //       style: OutlinedButton.styleFrom(
+                              //     //           side: const BorderSide(
+                              //     //             width: 2,
+                              //     //             color: ColorConstants.whitecolr,
+                              //     //           ),
+                              //     //           shape: const RoundedRectangleBorder(
+                              //     //               borderRadius:
+                              //     //               BorderRadius.all(Radius.circular(20)))),
+                              //     //       onPressed: () {
+                              //     //
+                              //     //        // facebookloginfunction();
+                              //     //       },
+                              //     //       icon: SizedBox(
+                              //     //           height: 30,
+                              //     //           width: 30,
+                              //     //           child: Image.asset('assets/images/facebook.png')),
+                              //     //       label: Text("Facebook")),
+                              //     // ),
+                              //
+                              //   ],
+                              // ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    height: 2,
+                                    width: 150,
+                                    color: ColorConstants.whitecolr,
                                   ),
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                  const Text(
+                                    "Or",
+                                    style: TextStyle(
+                                        color: ColorConstants.whitecolr,
+                                        fontSize: 18),
+                                  ),
+                                  Container(
+                                    height: 2,
+                                    width: 150,
+                                    color: ColorConstants.whitecolr,
+                                  )
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Container(
+                                    width: Diamensions.width10 * 15,
+                                    height: Diamensions.width10 * 4,
+                                    margin: EdgeInsets.only(
+                                        top: Diamensions.width10),
+                                    child: OutlinedButton.icon(
+                                        style: OutlinedButton.styleFrom(
+                                            side: const BorderSide(
+                                              width: 2,
+                                              color: ColorConstants.whitecolr,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(
+                                                        Diamensions.width10 *
+                                                            2)))),
+                                        onPressed: () {
+                                          setState(() {
+                                            _gmaillayoutVisible = true;
+                                            _numberlayoutVisible = false;
+                                            _otpverifylayoutVisible = false;
+                                          });
+                                        },
+                                        icon: SizedBox(
+                                            height: Diamensions.height10 * 3,
+                                            width: Diamensions.width10 * 3,
+                                            child: Image.asset(
+                                                'assets/images/gmail.png')),
+                                        label: Text(
+                                          "Gmail",
+                                          style: TextStyle(
+                                            fontSize: Diamensions.fontsize2 * 6,
+                                          ),
+                                        )),
+                                  ),
+                                  Container(
+                                    width: Diamensions.width10 * 15,
+                                    height: Diamensions.width10 * 4,
+                                    margin: EdgeInsets.only(
+                                        top: Diamensions.height10),
+                                    child: OutlinedButton.icon(
+                                        style: OutlinedButton.styleFrom(
+                                            side: const BorderSide(
+                                              width: 2,
+                                              color: ColorConstants.whitecolr,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(
+                                                        Diamensions.width10 *
+                                                            2)))),
+                                        onPressed: () {
+                                          setState(() {
+                                            _numberlayoutVisible = true;
+                                            _gmaillayoutVisible = false;
+                                            _otpverifylayoutVisible = false;
+                                          });
+                                        },
+                                        icon: SizedBox(
+                                            height: Diamensions.height10 * 3,
+                                            width: Diamensions.width10 * 3,
+                                            child: Image.asset(
+                                                'assets/images/telephone.png')),
+                                        label: Text(
+                                          "Number",
+                                          style: TextStyle(
+                                            fontSize: Diamensions.fontsize2 * 6,
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                              // gmail sign in layout
+                              Visibility(
+                                  visible: _gmaillayoutVisible,
+                                  child: Column(
                                     children: [
                                       Container(
-                                        width: Diamensions.width10*9,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            showCountryPicker(
-                                              context: context,
-                                              favorite: <String>['IN'],
-                                              //Optional. Shows phone code before the country name.
-                                              showPhoneCode: true,
-                                              onSelect: (Country country) {
-
-
-                                                setState(() {
-                                                  var name = country.countryCode;
-                                                  codeg = country.phoneCode;
-
-                                                  codetextg = "+$codeg ($name)";
-                                                });
-                                                print("$codetextg");
-                                              },
-                                              // Optional. Sets the theme for the country list picker.
-                                              countryListTheme: CountryListThemeData(
-                                                // Optional. Sets the border radius for the bottomsheet.
-                                                borderRadius:  BorderRadius.only(
-                                                  topLeft: Radius.circular(Diamensions.width10*4),
-                                                  topRight: Radius.circular(Diamensions.width10*4),
+                                        margin: EdgeInsets.only(
+                                          left: Diamensions.width10 * 2,
+                                          right: Diamensions.width10 * 2,
+                                          top: Diamensions.width5 * 3,
+                                        ),
+                                        child: TextFormField(
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            controller: emailControler,
+                                            style: const TextStyle(
+                                                color:
+                                                    ColorConstants.whitecolr),
+                                            decoration: const InputDecoration(
+                                                labelText: "Enter Email",
+                                                labelStyle: TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                hintStyle: TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width: 2.0),
                                                 ),
-                                                // Optional. Styles the search field.
-                                                inputDecoration: InputDecoration(
-                                                  labelText: 'Search',
-                                                  hintText: 'Start typing to search',
-                                                  prefixIcon: const Icon(Icons.search),
-                                                  border: OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                      color: const Color(0xFF8C98A8).withOpacity(0.2),
+                                                disabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width: 2.0),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                ColorConstants
+                                                                    .whitecolr,
+                                                            width: 2.0)),
+                                                prefixIcon: Icon(
+                                                  Icons.email_outlined,
+                                                  color:
+                                                      ColorConstants.whitecolr,
+                                                ))),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                          left: Diamensions.width10 * 2,
+                                          right: Diamensions.width10 * 2,
+                                          top: 13,
+                                        ),
+                                        child: TextFormField(
+                                            obscureText: !_passwordVisible,
+                                            keyboardType: TextInputType.text,
+                                            controller: passwordControler,
+                                            style: const TextStyle(
+                                                color:
+                                                    ColorConstants.whitecolr),
+                                            decoration: InputDecoration(
+                                                labelText: "Enter Password",
+                                                labelStyle: const TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                hintStyle: const TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                border:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width: 2.0),
+                                                ),
+                                                disabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width: 2.0),
+                                                ),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                ColorConstants
+                                                                    .whitecolr,
+                                                            width: 2.0)),
+                                                prefixIcon: const Icon(
+                                                  Icons.phonelink_lock,
+                                                  color:
+                                                      ColorConstants.whitecolr,
+                                                ),
+                                                suffixIcon: IconButton(
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _passwordVisible =
+                                                            !_passwordVisible;
+                                                      });
+                                                    },
+                                                    icon: Icon(
+                                                      _passwordVisible
+                                                          ? Icons.visibility
+                                                          : Icons
+                                                              .visibility_off,
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                    )))),
+                                      ),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: Diamensions.width10 * 4,
+                                        margin: EdgeInsets.only(
+                                            left: Diamensions.width10 * 2,
+                                            right: Diamensions.width10 * 2,
+                                            top: Diamensions.width10,
+                                            bottom: 5),
+                                        child: FloatingActionButton.extended(
+                                          backgroundColor:
+                                              ColorConstants.greencolor,
+                                          onPressed: () {
+                                            emailandpasswordsigning();
+                                          },
+                                          label: Text(
+                                            'Sign In',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    Diamensions.fontsize19),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+
+                              //number and otp layout
+
+                              Visibility(
+                                  visible: _numberlayoutVisible,
+                                  child: Column(
+                                    children: [
+                                      //number picker layout
+                                      Container(
+                                        height: Diamensions.width10 * 5,
+                                        margin: EdgeInsets.only(
+                                            left: Diamensions.width10 +
+                                                Diamensions.width5,
+                                            right: Diamensions.width10 +
+                                                Diamensions.width5,
+                                            top: Diamensions.height10),
+                                        width: Diamensions.width310,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: Colors.white, width: 2),
+                                          borderRadius: BorderRadius.circular(
+                                              Diamensions.width10),
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: Diamensions.width10 * 8,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  showCountryPicker(
+                                                    context: context,
+                                                    favorite: <String>['IN'],
+                                                    //Optional. Shows phone code before the country name.
+                                                    showPhoneCode: true,
+                                                    onSelect:
+                                                        (Country country) {
+                                                      setState(() {
+                                                        var name =
+                                                            country.countryCode;
+                                                        codeg =
+                                                            country.phoneCode;
+
+                                                        codetextg =
+                                                            "+$codeg ($name)";
+                                                      });
+                                                      print("$codetextg");
+                                                    },
+                                                    // Optional. Sets the theme for the country list picker.
+                                                    countryListTheme:
+                                                        CountryListThemeData(
+                                                      // Optional. Sets the border radius for the bottomsheet.
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                Diamensions
+                                                                    .width5),
+                                                        topRight:
+                                                            Radius.circular(
+                                                                Diamensions
+                                                                    .width5),
+                                                      ),
+                                                      // Optional. Styles the search field.
+                                                      inputDecoration:
+                                                          InputDecoration(
+                                                        labelText: 'Search',
+                                                        hintText:
+                                                            'Start typing to search',
+                                                        prefixIcon: const Icon(
+                                                            Icons.search),
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderSide:
+                                                              BorderSide(
+                                                            color: const Color(
+                                                                    0xFF8C98A8)
+                                                                .withOpacity(
+                                                                    0.2),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                                child: Text(
+                                                  '$codetextg',
+                                                  style: TextStyle(
+                                                      fontSize: Diamensions
+                                                              .fontsize2 *
+                                                          6),
+                                                ),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              child: Container(
+                                                margin: EdgeInsets.only(
+                                                    right: Diamensions.width10),
+                                                child: TextField(
+                                                  onChanged: (value) {},
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  controller: numberControler,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    hintText: 'Enter Number',
+                                                    hintStyle: TextStyle(
+                                                        color: Colors.white),
+                                                    enabledBorder:
+                                                        UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.white),
+                                                    ),
+                                                    focusedBorder:
+                                                        UnderlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          color: Colors.white),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            );
-                                          },
-                                          child:  Text('$codetextg'),
+                                            )
+                                          ],
                                         ),
                                       ),
-                                      Flexible(
-                                        child:Container(
-                                          margin: EdgeInsets.only(right: Diamensions.width10),
-                                          child: TextField(
-                                            onChanged: (value){
-                                            },
-                                            style: const TextStyle(color: Colors.white),
-                                            keyboardType: TextInputType.number,
-                                            controller: numberControler,
-                                            decoration: const InputDecoration(
-                                              hintText: 'Enter Number',
-                                              hintStyle: TextStyle(color: Colors.white),
-                                              enabledBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.white),
-                                              ),
-                                              focusedBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.white),
-                                              ),
-                                            ),
+                                      Container(
+                                          width: Diamensions.width310,
+                                          margin: EdgeInsets.only(
+                                              left: Diamensions.width10 * 2,
+                                              right: Diamensions.width10 * 2,
+                                              top: Diamensions.width10,
+                                              bottom: Diamensions.width10),
+                                          child: TextFormField(
+                                              maxLines: 1,
+                                              style: const TextStyle(
+                                                  color:
+                                                      ColorConstants.whitecolr),
+                                              keyboardType: TextInputType.name,
+                                              controller: nameControler,
+                                              decoration: InputDecoration(
+                                                contentPadding: EdgeInsets.only(
+                                                    top: Diamensions.width10 *
+                                                        1.5,
+                                                    bottom:
+                                                        Diamensions.width10 *
+                                                            1.5),
+                                                labelText: "Enter Name",
+                                                labelStyle: const TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                hintStyle: const TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                border: OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width:
+                                                          Diamensions.width1 *
+                                                              2),
+                                                ),
+                                                disabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width: 2),
+                                                ),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                ColorConstants
+                                                                    .whitecolr,
+                                                            width: 2)),
+                                                prefixIcon: const Icon(
+                                                  Icons.person,
+                                                  color:
+                                                      ColorConstants.whitecolr,
+                                                ),
+                                              ))),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: Diamensions.width10 * 5,
+                                        margin: EdgeInsets.only(
+                                            left: Diamensions.width10 * 2,
+                                            right: Diamensions.width10 * 2,
+                                            bottom: Diamensions.height5),
+                                        child: FloatingActionButton.extended(
+                                          backgroundColor:
+                                              ColorConstants.greencolor,
+                                          onPressed: () {
+                                            setState(() {
+                                              _gmaillayoutVisible = false;
+                                              _numberlayoutVisible = false;
+                                              _otpverifylayoutVisible = true;
+                                            });
+                                            getotpfunction();
+                                          },
+                                          label: Text(
+                                            'Get Otp',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    Diamensions.fontsize19),
                                           ),
                                         ),
-                                      )
+                                      ),
                                     ],
-                                  ),
-                                ),
-                                Container(
-                                    width: Diamensions.width310,
-                                    height: Diamensions.height10*6,
-                                    margin:  EdgeInsets.only(
-                                      left: Diamensions.width10*2,
-                                      right: Diamensions.width10*2,
-                                      top: Diamensions.width10,
-                                    ),
-                                    child: TextFormField(
-                                        style: const TextStyle(color: ColorConstants.whitecolr),
-                                        keyboardType: TextInputType.name,
-                                        controller: nameControler,
-                                        decoration:  InputDecoration(
-                                          labelText: "Enter Name",
-                                          labelStyle:
-                                          const TextStyle(color: ColorConstants.whitecolr),
-                                          hintStyle:
-                                          const  TextStyle(color: ColorConstants.whitecolr),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: ColorConstants.whitecolr,
-                                                width: Diamensions.width1*2),
-                                          ),
-                                          disabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: ColorConstants.whitecolr,
-                                                width: Diamensions.width1*2),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: ColorConstants.whitecolr,
-                                                  width: Diamensions.width1*2)),
-                                          prefixIcon: const Icon(
-                                            Icons.person,
-                                            color: ColorConstants.whitecolr,
-                                          ),
-                                        )
-                                    )
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: Diamensions.width10*5,
-                                  margin:  EdgeInsets.only(
-                                      left: Diamensions.width10*2, right: Diamensions.width10*2, top: Diamensions.height10, bottom: Diamensions.height5),
-                                  child: FloatingActionButton.extended(
-                                    backgroundColor: ColorConstants.greencolor,
-                                    onPressed: () {
-                                      setState(() {
-                                        _gmaillayoutVisible = false;
-                                        _numberlayoutVisible = false;
-                                        _otpverifylayoutVisible = true;
-                                      });
-                                      getotpfunction();
-                                    },
-                                    label:  Text(
-                                      'Get Otp',
-                                      style: TextStyle(color: Colors.white, fontSize: Diamensions.fontsize19),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-
-                        //otp and verify layout
-
-                        Visibility(
-                            visible: _otpverifylayoutVisible,
-                            child: Column(
-                              children: [
-                                Container(
-                                    margin:  EdgeInsets.only(
-                                      left: Diamensions.width10*2,
-                                      right: Diamensions.width10*2,
-                                      top: Diamensions.height10,
-                                    ),
-                                    child: TextFormField(
-                                        style: const TextStyle(color: ColorConstants.whitecolr),
-                                        keyboardType: TextInputType.number,
-                                        controller: otpControler,
-                                        decoration: const InputDecoration(
-                                          labelText: "Enter otp",
-                                          labelStyle:
-                                          TextStyle(color: ColorConstants.whitecolr),
-                                          hintStyle:
-                                          TextStyle(color: ColorConstants.whitecolr),
-                                          border: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: ColorConstants.whitecolr,
-                                                width: 2.0),
-                                          ),
-                                          disabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: ColorConstants.whitecolr,
-                                                width: 2.0),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: ColorConstants.whitecolr,
-                                                  width: 2.0)),
-                                          prefixIcon: Icon(
-                                            Icons.perm_phone_msg,
-                                            color: ColorConstants.whitecolr,
-                                          ),
-                                        )
-                                    )
-                                ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  height: Diamensions.height10*5,
-                                  margin: EdgeInsets.only(
-                                      left: Diamensions.width10*2, right: Diamensions.width10*2, top: Diamensions.height10, bottom: Diamensions.height5),
-                                  child: FloatingActionButton.extended(
-                                    backgroundColor: ColorConstants.greencolor,
-                                    onPressed: () {
-                                      setState(() {
-                                        _numberlayoutVisible = true;
-                                        _otpverifylayoutVisible = false;
-                                      });
-                                      veriftywithanothernumber();
-                                    },
-                                    label:  Text(
-                                      'Verify Otp ',
-                                      style: TextStyle(color: Colors.white, fontSize: Diamensions.fontsize19),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                        ),
-
-                        //Anonymous Sign In
-
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: Diamensions.height10*5,
-                          margin: EdgeInsets.only(
-                              left: Diamensions.width10*2, right: Diamensions.width10*2, top: Diamensions.height10, bottom: Diamensions.height5),
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                side:  BorderSide(
-                                  width: Diamensions.width1*2,
-                                  color: ColorConstants.whitecolr,
-                                ),
-                                shape:  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(Diamensions.width10*2)))),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>  HomeScreen(loggedindata: loggedInUser,pageIndex: 0,iscomponentload: true,isLoggedIn: false,)));
-                            },
-                            child:  Text(
-                              " Sign In As Guest",
-                              style: TextStyle(fontSize: Diamensions.fontsize17),
-                            ),
-                          ),
-                        ),
-
-
-
-
-
-
-                        Container(
-                          height: Diamensions.width10*3,
-                          margin: EdgeInsets.only(left: Diamensions.width10*2),
-                          alignment: Alignment.centerLeft,
-                          child: TextButton(
-                              onPressed: () {
-                                forgotpassworddialog(context);
-                              },
-                              child: const Text(
-                                " forgot Password? Click here",
-                                style: TextStyle(color: ColorConstants.whitecolr),
-                              )
-                          ),
-                        ),
-
-                        Container(
-                          height: Diamensions.width10*3,
-                          margin: EdgeInsets.only(right: Diamensions.width10*2),
-                          alignment: Alignment.centerRight,
-                          child: TextButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const RegisterScreen()));
-                              },
-                              child: const Text(
-                                " Not Register? Click here",
-                                style: TextStyle(color: ColorConstants.whitecolr),
-                              )
-                          ),
-                        ),
-                        Container(
-                          margin:  EdgeInsets.only(left: Diamensions.width10*2),
-                          child: const Text(
-                            "By Joining FlyDealFare you Agree to FlyDealFare",
-                            style: TextStyle(color: ColorConstants.whitecolr),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: Diamensions.width10),
-                              child: TextButton(
-                                  onPressed: () {
-                                    String url = "https://flydealfare.com/terms-and-conditions/";
-                                    Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => OpenPravicyPolicyUrl(
-                                          url:url,title: "Term & Condition",)));
-                                  },
-                                  child: const Text(
-                                    "Term & Condition",
-                                    style: TextStyle(
-                                        color: ColorConstants.iconColror,
-                                        decoration: TextDecoration.underline),
                                   )),
-                            ),
-                            const Text("and ",
-                                style: TextStyle(color: ColorConstants.whitecolr)),
-                            TextButton(
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => const OpenPravicyPolicyUrl(url:"https://flydealfare.com/privacy-policy/",title: "Privacy Policy",)));
-                                },
-                                child: const Text(
-                                  "Privacy Policy",
-                                  style: TextStyle(
-                                      color: ColorConstants.iconColror,
-                                      decoration: TextDecoration.underline),
-                                )
-                            ),
-                          ],
-                        )
-                      ],
+
+                              //otp and verify layout
+
+                              Visibility(
+                                  visible: _otpverifylayoutVisible,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(
+                                            left: Diamensions.width10 * 2,
+                                            right: Diamensions.width10 * 2,
+                                            top: Diamensions.height10,
+                                          ),
+                                          child: TextFormField(
+                                              style: const TextStyle(
+                                                  color:
+                                                      ColorConstants.whitecolr),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              controller: otpControler,
+                                              decoration: InputDecoration(
+                                                contentPadding: EdgeInsets.only(
+                                                    top: Diamensions.width5 * 3,
+                                                    bottom:
+                                                        Diamensions.width5 * 3),
+                                                labelText: "Enter otp",
+                                                labelStyle: const TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                hintStyle: const TextStyle(
+                                                    color: ColorConstants
+                                                        .whitecolr),
+                                                border:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width: 2.0),
+                                                ),
+                                                disabledBorder:
+                                                    const OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: ColorConstants
+                                                          .whitecolr,
+                                                      width: 2.0),
+                                                ),
+                                                enabledBorder:
+                                                    const OutlineInputBorder(
+                                                        borderSide: BorderSide(
+                                                            color:
+                                                                ColorConstants
+                                                                    .whitecolr,
+                                                            width: 2.0)),
+                                                prefixIcon: const Icon(
+                                                  Icons.perm_phone_msg,
+                                                  color:
+                                                      ColorConstants.whitecolr,
+                                                ),
+                                              ))),
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: Diamensions.height10 * 5,
+                                        margin: EdgeInsets.only(
+                                            left: Diamensions.width10 * 2,
+                                            right: Diamensions.width10 * 2,
+                                            top: Diamensions.height10,
+                                            bottom: Diamensions.height5),
+                                        child: FloatingActionButton.extended(
+                                          backgroundColor:
+                                              ColorConstants.greencolor,
+                                          onPressed: () {
+                                            setState(() {
+                                              _numberlayoutVisible = true;
+                                              _otpverifylayoutVisible = false;
+                                            });
+                                            veriftywithanothernumber();
+                                          },
+                                          label: Text(
+                                            'Verify Otp ',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize:
+                                                    Diamensions.fontsize19),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+
+                              //Anonymous Sign In
+
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: Diamensions.height10 * 5,
+                                margin: EdgeInsets.only(
+                                    left: Diamensions.width10 * 2,
+                                    right: Diamensions.width10 * 2,
+                                    top: Diamensions.height10,
+                                    bottom: Diamensions.height5),
+                                child: OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                      side: const BorderSide(
+                                        width: 2,
+                                        color: ColorConstants.whitecolr,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(
+                                                  Diamensions.width10 * 2)))),
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => HomeScreen(
+                                                  loggedindata: loggedInUser,
+                                                  pageIndex: 0,
+                                                  iscomponentload: true,
+                                                  isLoggedIn: false,
+                                                )));
+                                  },
+                                  child: Text(
+                                    " Sign In As Guest",
+                                    style: TextStyle(
+                                        fontSize: Diamensions.fontsize17),
+                                  ),
+                                ),
+                              ),
+
+                              Container(
+                                height: Diamensions.width10 * 3,
+                                margin: EdgeInsets.only(
+                                    left: Diamensions.width10 * 2),
+                                alignment: Alignment.centerLeft,
+                                child: TextButton(
+                                    onPressed: () {
+                                      forgotpassworddialog(context);
+                                    },
+                                    child: Text(
+                                      " forgot Password? Click here",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize2 * 6,
+                                          color: ColorConstants.whitecolr),
+                                    )),
+                              ),
+
+                              Container(
+                                height: Diamensions.width10 * 3,
+                                margin: EdgeInsets.only(
+                                    right: Diamensions.width10 * 2),
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const RegisterScreen()));
+                                    },
+                                    child: Text(
+                                      " Not Register? Click here",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize2 * 6,
+                                          color: ColorConstants.whitecolr),
+                                    )),
+                              ),
+                              Text(
+                                "By Joining FlyDealFare you Agree to FlyDealFare",
+                                style: TextStyle(
+                                    fontSize: Diamensions.fontsize2 * 6,
+                                    color: ColorConstants.whitecolr),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  TextButton(
+                                      onPressed: () {
+                                        String url =
+                                            "https://flydealfare.com/terms-and-conditions/";
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    OpenPravicyPolicyUrl(
+                                                      url: url,
+                                                      title: "Term & Condition",
+                                                    )));
+                                      },
+                                      child: Text(
+                                        "Term & Condition",
+                                        style: TextStyle(
+                                          fontSize: Diamensions.fontsize2 * 6,
+                                          color: ColorConstants.iconColror,
+                                        ),
+                                      )),
+                                  Text("and ",
+                                      style: TextStyle(
+                                          fontSize: Diamensions.fontsize2 * 6,
+                                          color: ColorConstants.whitecolr)),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const OpenPravicyPolicyUrl(
+                                                      url:
+                                                          "https://flydealfare.com/privacy-policy/",
+                                                      title: "Privacy Policy",
+                                                    )));
+                                      },
+                                      child: Text(
+                                        "Privacy Policy",
+                                        style: TextStyle(
+                                          fontSize: Diamensions.fontsize2 * 6,
+                                          color: ColorConstants.iconColror,
+                                        ),
+                                      )),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: Diamensions.height5,
+                      ),
+                      Divider(
+                        thickness: 1.2,
+                        color: ColorConstants.greencolor,
+                      ),
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: circularvisibility,
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      backgroundColor: ColorConstants.iconColror,
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: Diamensions.height5,
-                ),
-                Divider(thickness: 1.2,color: ColorConstants.greencolor,),
               ],
             ),
-          ),
-
-          Visibility(
-            visible: circularvisibility,
-            child: const Center(
-              child: CircularProgressIndicator(
-                backgroundColor: ColorConstants.iconColror,
-              ),
-            ),
-          ),
-        ],
-
-      ),
-
     );
   }
+
   void getotpfunction() async {
     var numberText = numberControler.text.toString().trim();
-     nameText = nameControler.text.toString().trim();
+    nameText = nameControler.text.toString().trim();
     if (numberText.isEmpty || numberText == " " || int.parse(numberText) == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("number text should not be empty"))
-      );
+          const SnackBar(content: Text("number text should not be empty")));
     } else {
-
       setState(() {
         _gmaillayoutVisible = false;
         _numberlayoutVisible = false;
         _otpverifylayoutVisible = true;
       });
 
-       finalnumber = "$countrycode$numberText";
+      finalnumber = "$countrycode$numberText";
       _auth = FirebaseAuth.instance;
 
       await _auth.verifyPhoneNumber(
@@ -950,94 +1162,87 @@ class _LogInScreenState extends State<LogInScreen> {
             print('The provided phone number is not valid.');
           }
         },
-
         codeSent: (String verificationId, int? forceResendingToken) async {
           verificationID = verificationId;
 
           // Create a PhoneAuthCredential with the code
-
         },
       );
     }
   }
 
   void verfiyuser(String code) async {
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationID, smsCode: code);
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        verificationId: verificationID, smsCode: code);
 
     // Sign the user in (or link) with the credential
-    var user =  await _auth.signInWithCredential(credential);
-    if(user != null){
-      ScaffoldMessenger.of(context).showSnackBar(
-          const  SnackBar(content:   Text("Logged in with number"))
-      );
+    var user = await _auth.signInWithCredential(credential);
+    if (user != null) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Logged in with number")));
 
-
-      UserApiService.getResgisterelinkList("Not Available", "Not Available",nameText , finalnumber, "Number").then((value) {
-
+      UserApiService.getResgisterelinkList(
+              "Not Available", "Not Available", nameText, finalnumber, "Number")
+          .then((value) {
         if (value.data == "Registration Completed") {
-          FirebaseFirestore.instance.collection("users").doc(user.user!.uid).set({
-            "UserId": value.UserId
-          }).then((values) =>
-          {
-            fetchlogindata(value.UserId!),
-
-          });
-        } else if(value.data == "User Alredy Exist") {
-          String userid="";
-          FirebaseFirestore.instance.collection("users").doc(user.user!.uid).get().then((vardata)  {
-            userid  = vardata['UserId'];
+          FirebaseFirestore.instance
+              .collection("users")
+              .doc(user.user!.uid)
+              .set({"UserId": value.UserId}).then((values) => {
+                    fetchlogindata(value.UserId!),
+                  });
+        } else if (value.data == "User Alredy Exist") {
+          String userid = "";
+          FirebaseFirestore.instance
+              .collection("users")
+              .doc(user.user!.uid)
+              .get()
+              .then((vardata) {
+            userid = vardata['UserId'];
             fetchlogindata(userid);
           });
-        }else{
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
-              const  SnackBar(content:   Text("Something went wrong"))
-          );
+              const SnackBar(content: Text("Something went wrong")));
         }
       });
-
     }
   }
 
-
-  void veriftywithanothernumber(){
+  void veriftywithanothernumber() {
     var otptext = otpControler.text.toString().trim();
-    if(otptext.isEmpty || otptext == " " || int.parse(otptext) == 0){
+    if (otptext.isEmpty || otptext == " " || int.parse(otptext) == 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const  SnackBar(content:   Text("opt text should not be empty"))
-      );
-    }else{
+          const SnackBar(content: Text("opt text should not be empty")));
+    } else {
       verfiyuser(otptext);
     }
-
   }
 
   Future<void> forgotpassworddialog(BuildContext context) async {
-
-
     return await showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Column(
-              children:   [
+              children: [
                 Divider(
-                  height: Diamensions.height1*2,
+                  height: Diamensions.height1 * 2,
                   color: Colors.white,
                   thickness: 2,
                 ),
                 SizedBox(
                   height: Diamensions.height5,
                 ),
-                const Text("Forgot Password ?",
-                style: TextStyle(
-                  color: Colors.white
-                ),
+                const Text(
+                  "Forgot Password ?",
+                  style: TextStyle(color: Colors.white),
                 ),
                 SizedBox(
                   height: Diamensions.height5,
                 ),
                 Divider(
-                  height: Diamensions.height1*2,
+                  height: Diamensions.height1 * 2,
                   color: Colors.white,
                   thickness: 2,
                 ),
@@ -1050,31 +1255,31 @@ class _LogInScreenState extends State<LogInScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      width: Diamensions.width310-Diamensions.width10,
+                      width: Diamensions.width310 - Diamensions.width10,
                       child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           controller: forgotemailController,
-                          style:  TextStyle(color: ColorConstants.whitecolr),
-                          decoration:  InputDecoration(
+                          style: TextStyle(color: ColorConstants.whitecolr),
+                          decoration: InputDecoration(
                               labelText: "Enter Email or Number",
-                              labelStyle:
-                              const TextStyle(color: ColorConstants.whitecolr),
-                              hintStyle:
-                             const TextStyle(color: ColorConstants.whitecolr),
+                              labelStyle: const TextStyle(
+                                  color: ColorConstants.whitecolr),
+                              hintStyle: const TextStyle(
+                                  color: ColorConstants.whitecolr),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorConstants.whitecolr,
-                                    width: Diamensions.width1*2),
+                                    width: Diamensions.width1 * 2),
                               ),
                               disabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorConstants.whitecolr,
-                                    width: Diamensions.width1*2),
+                                    width: Diamensions.width1 * 2),
                               ),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
                                       color: ColorConstants.whitecolr,
-                                      width: Diamensions.width1*2)),
+                                      width: Diamensions.width1 * 2)),
                               prefixIcon: const Icon(
                                 Icons.email_outlined,
                                 color: ColorConstants.whitecolr,
@@ -1088,13 +1293,14 @@ class _LogInScreenState extends State<LogInScreen> {
                       child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
                           controller: forgotemailController,
-                          style: const TextStyle(color: ColorConstants.whitecolr),
+                          style:
+                              const TextStyle(color: ColorConstants.whitecolr),
                           decoration: const InputDecoration(
                               labelText: "Enter New Password",
                               labelStyle:
-                              TextStyle(color: ColorConstants.whitecolr),
+                                  TextStyle(color: ColorConstants.whitecolr),
                               hintStyle:
-                              TextStyle(color: ColorConstants.whitecolr),
+                                  TextStyle(color: ColorConstants.whitecolr),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: ColorConstants.whitecolr,
@@ -1136,18 +1342,17 @@ class _LogInScreenState extends State<LogInScreen> {
           );
         });
   }
-  void sendemail(){
-    var emailtext  = forgotemailController.text.toString();
-    if(emailtext.isEmpty== true){
-      ScaffoldMessenger.of(context).showSnackBar(
-          const  SnackBar(content:   Text(" Please fill email"))
-      );
-    }else{
+
+  void sendemail() {
+    var emailtext = forgotemailController.text.toString();
+    if (emailtext.isEmpty == true) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text(" Please fill email")));
+    } else {
       _auth.sendPasswordResetEmail(email: emailtext).then((value) => {
-      ScaffoldMessenger.of(context).showSnackBar(
-      const  SnackBar(content:   Text("Please Check your email "))
-      )
-      });
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Please Check your email ")))
+          });
       //     .addOnCompleteListener( OnCompleteListener<Void>() {
       // @Override
       // public void onComplete(@NonNull Task<Void> task) {
@@ -1159,159 +1364,145 @@ class _LogInScreenState extends State<LogInScreen> {
     }
   }
 
-
-
-  void checkloggedIn()  async{
-
-   if(_auth.currentUser != null){
-     String userid="";
-     FirebaseFirestore.instance.collection("users").doc(_auth.currentUser!.uid).get().then((vardata)  {
-       userid  = vardata['UserId'];
-       fetchlogindata(userid);
-     });
-
-   }else{
-     setState(() {
-       loggedin = false;
-     });
-   }
+  void checkloggedIn() async {
+    if (_auth.currentUser != null) {
+      String userid = "";
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(_auth.currentUser!.uid)
+          .get()
+          .then((vardata) {
+        userid = vardata['UserId'];
+        fetchlogindata(userid);
+      });
+    } else {
+      setState(() {
+        loggedin = false;
+      });
+    }
   }
 
-
-
-
   signinwithCredential(OAuthCredential credential) {
-
     _auth.signInWithCredential(credential).then((value) {
-
-      if(value != null){
+      if (value != null) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const  SnackBar(content:   Text("Logged in with Facebook"))
-        );
+            const SnackBar(content: Text("Logged in with Facebook")));
 
-
-        UserApiService.getResgisterelinkList(value.user!.email!, "Not Available",value.user!.displayName! , "Not Available", "Apple").then((restvalues) {
-
+        UserApiService.getResgisterelinkList(
+                value.user!.email!,
+                "Not Available",
+                value.user!.displayName!,
+                "Not Available",
+                "Apple")
+            .then((restvalues) {
           if (restvalues.data == "Registration Completed") {
-            FirebaseFirestore.instance.collection("users").doc(value.user!.uid).set({
-              "UserId": restvalues.UserId
-            }).then((values) =>
-            {
-              fetchlogindata(restvalues.UserId!),
-
-            });
-          } else if(restvalues.data == "User Alredy Exist") {
-            String userid="";
-            FirebaseFirestore.instance.collection("users").doc(value.user!.uid).get().then((vardata)  {
-              userid  = vardata['UserId'];
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(value.user!.uid)
+                .set({"UserId": restvalues.UserId}).then((values) => {
+                      fetchlogindata(restvalues.UserId!),
+                    });
+          } else if (restvalues.data == "User Alredy Exist") {
+            String userid = "";
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(value.user!.uid)
+                .get()
+                .then((vardata) {
+              userid = vardata['UserId'];
               fetchlogindata(userid);
             });
-          }else{
+          } else {
             ScaffoldMessenger.of(context).showSnackBar(
-                const  SnackBar(content:   Text("Something went wrong"))
-            );
+                const SnackBar(content: Text("Something went wrong")));
           }
         });
-
       }
       print("user id => ${value.user!.uid}");
       print("sing in with firebase");
     });
   }
 
-  signinApple() async{
-  if(!await TheAppleSignIn.isAvailable()){
-    ScaffoldMessenger.of(context).showSnackBar(
-        const  SnackBar(content:   Text("This Device is not eligible for Apple Sign In"))
-    );
-    return;
-  }
+  signinApple() async {
+    if (!await TheAppleSignIn.isAvailable()) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("This Device is not eligible for Apple Sign In")));
+      return;
+    }
 
-  final res = await TheAppleSignIn.performRequests([
-    AppleIdRequest(requestedScopes: [Scope.email,Scope.fullName])
-  ]);
+    final res = await TheAppleSignIn.performRequests([
+      AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
+    ]);
 
-  switch (res.status) {
-    case AuthorizationStatus.authorized:
-      try {
-        //Get Token
-        final AppleIdCredential appleIdCredential = res.credential!;
-        final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
-        final credential = oAuthProvider.credential(
-            idToken: String.fromCharCodes(appleIdCredential.identityToken!),
-            accessToken: String.fromCharCodes(appleIdCredential.authorizationCode!));
+    switch (res.status) {
+      case AuthorizationStatus.authorized:
+        try {
+          //Get Token
+          final AppleIdCredential appleIdCredential = res.credential!;
+          final OAuthProvider oAuthProvider = OAuthProvider('apple.com');
+          final credential = oAuthProvider.credential(
+              idToken: String.fromCharCodes(appleIdCredential.identityToken!),
+              accessToken:
+                  String.fromCharCodes(appleIdCredential.authorizationCode!));
 
-        await signinwithcredentiall(credential);
+          await signinwithcredentiall(credential);
+        } on PlatformException catch (error) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(error.message!)));
+        } on FirebaseAuthException catch (error) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(error.message!)));
+        }
+        break;
+      case AuthorizationStatus.error:
 
+        // _errorMessage.sink.add('Apple authorization failed');
 
-      } on PlatformException catch (error) {
         ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content:   Text(error.message!))
-        );
-
-      } on FirebaseAuthException catch (error) {
-
-
+            SnackBar(content: Text(AuthorizationStatus.error.toString())));
+        break;
+      case AuthorizationStatus.cancelled:
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content:   Text(error.message!))
-        );
-      }
-      break;
-    case AuthorizationStatus.error:
-
-     // _errorMessage.sink.add('Apple authorization failed');
-
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content:   Text(AuthorizationStatus.error.toString()))
-      );
-      break;
-    case AuthorizationStatus.cancelled:
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content:   Text(AuthorizationStatus.error.toString()))
-      );
-      break;
-  }
+            SnackBar(content: Text(AuthorizationStatus.error.toString())));
+        break;
+    }
   }
 
   Future<void> signinwithcredentiall(AuthCredential credential) async {
+    _auth.signInWithCredential(credential).then((value) {
+      if (value != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Logged in with Apple")));
 
-   _auth.signInWithCredential(credential).then((value) {
-     if(value != null){
-       ScaffoldMessenger.of(context).showSnackBar(
-           const  SnackBar(content:   Text("Logged in with Apple"))
-       );
-
-
-       UserApiService.getResgisterelinkList(value.user!.email!, "Not Available", "Not Availble" , "Not Available", "Apple").then((restvalues) {
-
-         if (restvalues.data == "Registration Completed") {
-           FirebaseFirestore.instance.collection("users").doc(value.user!.uid).set({
-             "UserId": restvalues.UserId
-           }).then((values) =>
-           {
-             fetchlogindata(restvalues.UserId!),
-
-           });
-         } else if(restvalues.data == "User Alredy Exist") {
-           String userid="";
-           FirebaseFirestore.instance.collection("users").doc(value.user!.uid).get().then((vardata)  {
-             userid  = vardata['UserId'];
-             fetchlogindata(userid);
-           });
-         }else{
-           ScaffoldMessenger.of(context).showSnackBar(
-               const  SnackBar(content:   Text("Something went wrong"))
-           );
-         }
-       });
-
-     }
-     print("user id => ${value.user!.uid}");
-     print("sing in with firebase");
-  });
-
-
-
+        UserApiService.getResgisterelinkList(value.user!.email!,
+                "Not Available", "Not Availble", "Not Available", "Apple")
+            .then((restvalues) {
+          if (restvalues.data == "Registration Completed") {
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(value.user!.uid)
+                .set({"UserId": restvalues.UserId}).then((values) => {
+                      fetchlogindata(restvalues.UserId!),
+                    });
+          } else if (restvalues.data == "User Alredy Exist") {
+            String userid = "";
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(value.user!.uid)
+                .get()
+                .then((vardata) {
+              userid = vardata['UserId'];
+              fetchlogindata(userid);
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Something went wrong")));
+          }
+        });
+      }
+      print("user id => ${value.user!.uid}");
+      print("sing in with firebase");
+    });
   }
 
 //class end
